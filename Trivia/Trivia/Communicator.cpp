@@ -1,8 +1,6 @@
 #include "Communicator.h"
-#define PORT 200
 #define RECIVED_MESSGAE_SIZE 6
 #define NULL 0
-#define EXIT "EXIT"
 
 /*
 * init the socket connection to a tcp socket
@@ -37,20 +35,15 @@ Communicator::~Communicator()
 }
 
 /*
-	the main communicator thread that creates a
-	connection thread and checks if the user wants to exit the program
+	the main connection thread 
 	input: none
 	output: none
 */
 void Communicator::startHandleRequests()
 {
-	std::thread t = std::thread(&Communicator::bindAndListen, this);
-	t.detach();
-	std::string message = "";
-	do
-	{
-		std::getline(std::cin, message);
-	} while (message != EXIT);
+	std::string ip = "127.0.0.1";
+	int port = 200;
+	bindAndListen(ip, port);
 }
 
 /*
@@ -59,13 +52,13 @@ void Communicator::startHandleRequests()
 * input: none
 * output: none
 */
-void Communicator::bindAndListen()
+void Communicator::bindAndListen(const std::string& ip, int port)
 {
 	struct sockaddr_in sa = { 0 };
 
-	sa.sin_port = htons(PORT); // port that server will listen for
+	sa.sin_port = htons(port); // port that server will listen for
 	sa.sin_family = AF_INET;   // must be AF_INET
-	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
+	inet_pton(AF_INET, ip.c_str(), &sa.sin_addr.s_addr); //ip addres from user
 
 	// again stepping out to the global namespace
 	// Connects between the socket and the configuration (port and etc..)

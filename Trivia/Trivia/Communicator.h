@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <Ws2tcpip.h>
 
 class Communicator
 {
@@ -16,7 +17,7 @@ public:
 	void startHandleRequests();
 private:
 	//connection thread
-	void bindAndListen();
+	void bindAndListen(const std::string& ip, int port);
 	//client thread
 	void handleNewClient(SOCKET clientSocket);
 	//properties
