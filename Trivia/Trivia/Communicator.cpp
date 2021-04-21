@@ -66,7 +66,7 @@ void Communicator::bindAndListen(const std::string& ip, int port)
 	// Start listening for incoming requests of clients
 	if (listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	std::cout << "Listening on port " << 200 << std::endl;
+	std::cout << "Listening on port " << port << std::endl;
 
 	while (true)
 	{
