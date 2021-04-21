@@ -28,7 +28,7 @@ Server::~Server()
 */
 void Server::run()
 {
-	std::thread t = std::thread(&Communicator::startHandleRequests, this->m_communicator);
+	std::thread t = std::thread(&Communicator::startHandleRequests, this->m_communicator, _ip, _port);
 	t.detach();
 	std::string message = "";
 	do

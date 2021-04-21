@@ -14,7 +14,7 @@ class Communicator
 public:
 	Communicator();
 	~Communicator();
-	void startHandleRequests();
+	void startHandleRequests(std::string ip, int port);
 private:
 	//connection thread
 	void bindAndListen(const std::string& ip, int port);

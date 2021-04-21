@@ -39,10 +39,8 @@ Communicator::~Communicator()
 	input: none
 	output: none
 */
-void Communicator::startHandleRequests()
+void Communicator::startHandleRequests(std::string ip, int port)
 {
-	std::string ip = "127.0.0.1";
-	int port = 200;
 	bindAndListen(ip, port);
 }
 
@@ -68,7 +66,7 @@ void Communicator::bindAndListen(const std::string& ip, int port)
 	// Start listening for incoming requests of clients
 	if (listen(m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
-	std::cout << "Listening on port " << PORT << std::endl;
+	std::cout << "Listening on port " << 200 << std::endl;
 
 	while (true)
 	{
