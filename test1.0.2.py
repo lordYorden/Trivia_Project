@@ -14,9 +14,9 @@ else:
     if msg.decode() == "Hello":
         option = input("Login or SignUp?")
         if option == "Login":
-            MSG = "{username: “user1”, password: “1234”}"
+            MSG = "{username: "user1", password: "1234"}"
         elif option == "SignUp":
-            MSG = "{username: “user1”, password: “1234”, mail:user1@gmail.com}"
+            MSG = "{username: "user1", password: "1234", mail:user1@gmail.com}"
         sock.sendall((MSG.encode()))
         msg = sock.recv(1024)
         print(msg)
