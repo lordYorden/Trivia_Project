@@ -20,11 +20,21 @@ LoginRequestHandler::~LoginRequestHandler()
 {
 }
 
+/*
+* check if the request is a login or signup request
+* input: info - the request information (RequestInfo)
+* output: isRequestRelevent - if the request is a login or signup request (bool)
+*/
 bool LoginRequestHandler::isRequestRelevent(RequestInfo info)
 {
 	return info.id == RequestId::MT_LOGIN_REQUEST || info.id == RequestId::MT_SIGNUP_REQUEST;
 }
 
+/*
+* handle the login request from the client
+* input: info - the request information (RequestInfo)
+* output: requestRes - the request result to send back to client (RequestResult)
+*/
 RequestResult LoginRequestHandler::RequestHandler(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
@@ -66,6 +76,6 @@ RequestResult LoginRequestHandler::RequestHandler(RequestInfo info)
 		buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
 	}
 
-	RequestResult RequestRes = { buffer, newHandler };
-	return RequestRes;
+	RequestResult requestRes = { buffer, newHandler };
+	return requestRes;
 }

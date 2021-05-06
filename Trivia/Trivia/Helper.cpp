@@ -2,6 +2,11 @@
 #define DATA_LEN 4
 #define REQUEST_ID_LEN 1
 
+/*
+* orgenize the process of reciveing a message
+* input: sock - socket connection (SOCKET)
+* output: info - the request info from the user (RequestInfo)
+*/
 RequestInfo Helper::getUserRequestInfo(SOCKET sock)
 {
 	int requestId = getRequestId(sock);
@@ -12,6 +17,11 @@ RequestInfo Helper::getUserRequestInfo(SOCKET sock)
 	return info;
 }
 
+/*
+* orgenize the process of reciveing a message
+* input: sock - socket connection (SOCKET)
+* output: info - the request info from the user (RequestInfo)
+*/
 int Helper::getRequestId(SOCKET sock)
 {
 	char* s = getPartFromSocket(sock, REQUEST_ID_LEN);
@@ -61,6 +71,12 @@ int Helper::getIntPartFromSocket(SOCKET sc, int bytesNum)
 	return atoi(s);
 }
 
+/*
+* gets the message from the user and puts it in std::vector<unsigned char>
+* input: sc - socket connection (SOCKET)
+*		,bytesNum - the length of the message (int)
+* output: buffer - the user message (std::vector<unsigned char>)
+*/
 std::vector<unsigned char> Helper::getBufferFromSocket(SOCKET sc, int bytesNum)
 {
 	char* s = getPartFromSocket(sc, bytesNum, 0);
@@ -72,6 +88,12 @@ std::vector<unsigned char> Helper::getBufferFromSocket(SOCKET sc, int bytesNum)
 	return res;
 }
 
+/*
+* sends the given message to the user 
+* input: sc - socket connection (SOCKET)
+*		,message - the message to user (std::vector<unsigned char>)
+* output: none
+*/
 void Helper::sendData(SOCKET sock, std::vector<unsigned char> message)
 {
 	unsigned char* data = message.data();

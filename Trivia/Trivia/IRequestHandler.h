@@ -22,6 +22,7 @@ class IRequestHandler
 public:
 	IRequestHandler();
 	~IRequestHandler();
+	//abstruct methods to override in base class
 	virtual bool isRequestRelevent(RequestInfo info) = 0;
 	virtual RequestResult RequestHandler(RequestInfo info) = 0;
 
