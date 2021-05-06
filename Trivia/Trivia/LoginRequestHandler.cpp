@@ -34,26 +34,36 @@ RequestResult LoginRequestHandler::RequestHandler(RequestInfo info)
 		ErrorResponse errorRes;
 		errorRes.message = "Error!....Signup or Login before continue";
 		buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
-		
+		RequestResult RequestRes = { buffer, newHandler };
+		return RequestRes;
 	}
 	
-	if (info.id = RequestId::MT_LOGIN_REQUEST)
+	try
 	{
-		LoginRequest userInfo = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
-		std::cout << "username: " << userInfo.username << ", password: " << userInfo.password << std::endl;
-		LoginResponse logRes;
-		logRes.status = RequestId::MT_RESPONSE_OK;
-		buffer = JsonResponseSerializer::serializeLoginResponse(logRes);
-		std::cout << "Login Successful" << std::endl;
+		if (info.id == RequestId::MT_LOGIN_REQUEST)
+		{
+			LoginRequest userInfo = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
+			std::cout << "username: " << userInfo.username << ", password: " << userInfo.password << std::endl;
+			LoginResponse logRes;
+			logRes.status = RequestId::MT_RESPONSE_OK;
+			buffer = JsonResponseSerializer::serializeLoginResponse(logRes);
+			std::cout << "Login Successful" << std::endl;
+		}
+		else
+		{
+			SignupRequest userInfo = JsonRequestPacketDeserializer::deserializerSignupRequest(info.buffer);
+			std::cout << "username: " << userInfo.username << ", password: " << userInfo.password << ", email: " << userInfo.email << std::endl;
+			SignupResponse signRes;
+			signRes.status = RequestId::MT_RESPONSE_OK;
+			buffer = JsonResponseSerializer::serializeSignupResponse(signRes);
+			std::cout << "Signup Successful" << std::endl;
+		}
 	}
-	else
+	catch (std::exception& e)
 	{
-		SignupRequest userInfo = JsonRequestPacketDeserializer::deserializerSignupRequest(info.buffer);
-		std::cout << "username: " << userInfo.username << ", password: " << userInfo.password << ", email: " << userInfo.email << std::endl;
-		SignupResponse signRes;
-		signRes.status = RequestId::MT_RESPONSE_OK;
-		buffer = JsonResponseSerializer::serializeSignupResponse(signRes);
-		std::cout << "Signup Successful" << std::endl;
+		ErrorResponse errorRes;
+		errorRes.message = "Error!....Invalid Json";
+		buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
 	}
 
 	RequestResult RequestRes = { buffer, newHandler };

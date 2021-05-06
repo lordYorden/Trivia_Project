@@ -111,7 +111,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		{
 			reqInfo = Helper::getUserRequestInfo(clientSocket);
 			reqRes = handler->RequestHandler(reqInfo);
-			handler = reqRes.newHandler;
+			//*until factory is complete* handler = reqRes.newHandler;
 			buffer = reqRes.responseBuffer;
 			Helper::sendData(clientSocket, buffer);
 		} while (reqInfo.id != RequestId::MT_EXIT);
