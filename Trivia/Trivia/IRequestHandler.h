@@ -1,7 +1,8 @@
 #pragma once
 #include <ctime>
-#include "Helper.h"
 #include <vector>
+
+class IRequestHandler;
 
 typedef struct RequestInfo
 {

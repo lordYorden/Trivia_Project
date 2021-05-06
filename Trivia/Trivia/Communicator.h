@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include "Helper.h"
 #include <Ws2tcpip.h>
 
 class Communicator

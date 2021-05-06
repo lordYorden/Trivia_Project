@@ -1,4 +1,5 @@
 #include "LoginRequestHandler.h"
+#include "Helper.h"
 
 /*
 * empty LoginRequestHandler class constractor
