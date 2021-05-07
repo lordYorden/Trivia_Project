@@ -8,9 +8,20 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "JsonRequestPacketDeserializer.h"
 
 int main() 
 {
+	/*debug* std::vector<unsigned char> buffer;
+	std::string binary = R"({"username": "user1", "password": "1234", "mail": "user1@gmail.com"})";
+	for (int i = 0; i < binary.size(); i++)
+	{
+		buffer.push_back(binary[i]);
+	}
+	
+	SignupRequest info = JsonRequestPacketDeserializer::deserializerSignupRequest(buffer);
+	std::cout << info.username << " " << info.password << " " << info.email;*/
 	WSAInitializer wsaInit;
 
 	//gets the ip and port from config
