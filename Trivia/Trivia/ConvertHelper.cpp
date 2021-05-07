@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include "json.hpp"
+#include "Helper.h"
 std::string ConvertHelper::intToBin(int code)
 {
 	std::string binCode = "";
@@ -18,7 +19,7 @@ std::string ConvertHelper::intToBin(int code)
 std::string ConvertHelper::fillZeros(std::string binLength)
 {
 	std::string zeroToFill = "";
-	for (int i = 0; i < 32 - binLength.length(); i++)
+	for (int i = 0; i < 4 - binLength.length(); i++)
 	{
 		zeroToFill += "0";
 	}
@@ -43,17 +44,12 @@ void ConvertHelper::fillingVector(std::vector<unsigned char>& buffer, nlohmann::
 {
 
 	int size = j.dump().length();
-	std::string binCode = intToBin(size);
+	std::string binCode = std::to_string(size);
 	binCode = fillZeros(binCode);
 	int start = 0;
 	for (int i = 0; i < 4; i++)
 	{
-
-		std::string newStr = binCode.substr(start, 8);
-		buffer.push_back(byteTochar(newStr));
-		start += 8;
-		newStr = "";
-
+		buffer.push_back(binCode[i]);
 	}
 	for (int i = 0; i < size; i++)
 	{
