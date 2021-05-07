@@ -37,6 +37,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SqliteDatabase.h">
+	  <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,6 +75,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SqliteDatabase.cpp">
+	  <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ConvertHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
