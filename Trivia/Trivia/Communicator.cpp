@@ -87,8 +87,8 @@ void Communicator::bindAndListen(const std::string& ip, int port)
 		// the function that handle the conversation with the client
 		//create a thread of the function that handle the conversation with the client
 
-		LoginRequestHandler clientHandler;
-		m_clients.insert(std::pair<SOCKET, IRequestHandler>(client_socket, clientHandler));
+		LoginRequestHandler* clientHandler = new LoginRequestHandler();
+		m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, clientHandler));
 		std::thread t = std::thread(&Communicator::handleNewClient, this, client_socket);
 		t.detach();
 	}
@@ -103,14 +103,22 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
 	{
-		std::string s = "Hello";
-		send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
+		IRequestHandler* handler = m_clients[clientSocket];
+		RequestInfo reqInfo;
+		RequestResult reqRes;
+		std::vector<unsigned char> buffer;
+		do
+		{
+			reqInfo = Helper::getUserRequestInfo(clientSocket);
+			reqRes = handler->RequestHandler(reqInfo);
+			//*until factory is complete* handler = reqRes.newHandler;
+			buffer = reqRes.responseBuffer;
+			Helper::sendData(clientSocket, buffer);
+		} while (reqInfo.id != RequestId::MT_EXIT);
 
-		char m[RECIVED_MESSGAE_SIZE];
-		recv(clientSocket, m, RECIVED_MESSGAE_SIZE-1, 0);
-		m[RECIVED_MESSGAE_SIZE-1] = NULL;
-		std::cout << m << std::endl;
 		closesocket(clientSocket);
+		std::cout << "client has disconnected!" << std::endl;
+
 	}
 	catch (const std::exception& e)
 	{
