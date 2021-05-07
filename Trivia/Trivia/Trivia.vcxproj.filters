@@ -37,7 +37,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SqliteDatabase.h">
-	  <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
@@ -52,6 +52,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -78,7 +84,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SqliteDatabase.cpp">
-	  <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConvertHelper.cpp">
       <Filter>Source Files</Filter>
@@ -90,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
