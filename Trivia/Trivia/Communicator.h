@@ -9,11 +9,13 @@
 #include <thread>
 #include "Helper.h"
 #include <Ws2tcpip.h>
+#include "RequestHandlerFactory.h"
+#include "LoginRequestHandler.h"
 
 class Communicator
 {
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& factory);
 	~Communicator();
 	void startHandleRequests(std::string ip, int port);
 private:
@@ -24,4 +26,5 @@ private:
 	//properties
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
+	RequestHandlerFactory& m_handlerFactory;
 };

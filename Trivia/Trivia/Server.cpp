@@ -2,12 +2,15 @@
 #define EXIT "EXIT"
 
 /*
-* empty server class constractor
-* input: none
+* Server class constractor
+* input: ip - the ip of the server (std::string&)
+*		,port - the port of which the server is listening for requests (int)
+*		,database - the db of which the server is storing its data in (IDatabase*)
 * output: none
 */
-Server::Server(std::string& ip, int port):
-	_ip(ip), _port(port)
+Server::Server(std::string& ip, int port, IDatabase* database):
+	_ip(ip), _port(port), m_database(database), 
+	m_hadlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(m_hadlerFactory))
 {
 }
 
