@@ -13,5 +13,9 @@ public:
 	{
 		m_username = uname;
 	}
+	bool operator==(LoggedUser const& other) 
+	{
+		return this->m_username == other.m_username;
+	}
 	
 };

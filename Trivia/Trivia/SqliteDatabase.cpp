@@ -8,7 +8,8 @@ void SqliteDatabase::open()
 		_db = NULL;
 		std::cout << "Failed to open DB" << std::endl;
 	}
-	std::string statement = "CREATE TABLE USERS(UNAME TEXT PRIMARY KEY,\PASSWORD TEXT NOT NULL,\MAIL TEXT NOT NULL);";
+	std::cout << "opend" << std::endl;
+	std::string statement = "CREATE TABLE IF NOT EXISTS USERS(UNAME TEXT NOT NULL PRIMARY KEY,PASSWORD TEXT NOT NULL,MAIL TEXT NOT NULL);";
 	ExecuteSQL(statement);
 }
 
@@ -35,12 +36,12 @@ bool SqliteDatabase::doesUserExist(std::string name)
 
 }
 
-bool SqliteDatabase::doesPasswordMatch(std::string password, std::string name)
+bool SqliteDatabase::doesPasswordMatch(std::string name, std::string password)
 {
 	bool flag = false;
-	std::string statement = "SELECT * FROM USERS WHERE PASSWORD = \"" + password + "\" AND UNAME = \"" + name + "\";";
+	std::string statement = "SELECT * FROM USERS WHERE UNAME = \"" + name + "\" AND PASSWORD = \"" + password + "\";";
 	ExecuteSqlCallback(statement, isExistsCallback, &flag);
-	return flag
+	return flag;
 }
 
 void SqliteDatabase::addNewUser(std::string name, std::string password, std::string mail)
@@ -65,5 +66,4 @@ int SqliteDatabase::isExistsCallback(void* data, int argc, char** argv, char** a
 {
 	*(bool*)data = true;
 	return 0;
-
 }

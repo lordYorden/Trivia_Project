@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include "JsonRequestPacketDeserializer.h"
+#include "SqliteDatabase.h"
 
 int main() 
 {
@@ -24,6 +25,8 @@ int main()
 	std::cout << info.username << " " << info.password << " " << info.email;*/
 	WSAInitializer wsaInit;
 
+	SqliteDatabase* db = new SqliteDatabase();
+	db->open();
 	//gets the ip and port from config
 	std::string ip = "";
 	std::string port = "";
@@ -40,7 +43,7 @@ int main()
 		file.close();
 	}
 
-	Server myServer(ip, stoi(port));
+	Server myServer(ip, stoi(port), db);
 
 	//runs the server
 	try

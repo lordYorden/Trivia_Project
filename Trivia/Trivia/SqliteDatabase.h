@@ -5,7 +5,7 @@ class SqliteDatabase : public IDatabase
 {
 public:
 	bool doesUserExist(std::string name) override;
-	bool doesPasswordMatch(std::string password, std::string name)override;
+	bool doesPasswordMatch(std::string name, std::string password)override;
 	void addNewUser(std::string name, std::string password, std::string mail)override;
 	
 	void ExecuteSQL(std::string statement);
