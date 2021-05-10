@@ -4,10 +4,11 @@
 
 /*
 * init the socket connection to a tcp socket
-* input: none
+* input: factory - the Request Handler Factory (RequestHandlerFactory&)
 * output: none
 */
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& factory):
+	m_handlerFactory(factory)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -87,7 +88,7 @@ void Communicator::bindAndListen(const std::string& ip, int port)
 		// the function that handle the conversation with the client
 		//create a thread of the function that handle the conversation with the client
 
-		LoginRequestHandler* clientHandler = new LoginRequestHandler();
+		LoginRequestHandler* clientHandler = m_handlerFactory.createLoginRequestHandler();
 		m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, clientHandler));
 		std::thread t = std::thread(&Communicator::handleNewClient, this, client_socket);
 		t.detach();
