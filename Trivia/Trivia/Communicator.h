@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include "Helper.h"
 #include <Ws2tcpip.h>
 
 class Communicator
@@ -22,5 +23,5 @@ private:
 	void handleNewClient(SOCKET clientSocket);
 	//properties
 	SOCKET m_serverSocket;
-	std::map<SOCKET, IRequestHandler> m_clients;
+	std::map<SOCKET, IRequestHandler*> m_clients;
 };
