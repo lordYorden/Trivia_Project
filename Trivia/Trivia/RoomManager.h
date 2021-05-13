@@ -32,6 +32,8 @@ private:
 class RoomManager
 {
 public:
+	RoomManager();
+	~RoomManager();
 	void createRoom(LoggedUser admin, RoomData metadata);
 	void deleteRoom(int roomID);
 	bool getRoomState(int roomID);
