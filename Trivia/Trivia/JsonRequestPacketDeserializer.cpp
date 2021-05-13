@@ -43,6 +43,42 @@ SignupRequest JsonRequestPacketDeserializer::deserializerSignupRequest(std::vect
     return info;
 }
 
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializerGetPlayersRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    unsigned int roomID = j.at("roomID");
+
+    GetPlayersInRoomRequest info = { roomID };
+    return info;
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializerJoinRoomRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    unsigned int roomID = j.at("roomID");
+
+    JoinRoomRequest info = { roomID };
+    return info;
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializerCreateRoomRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    std::string roomName = j.at("roomName");
+    unsigned int maxUsers = j.at("maxUsers");
+    unsigned int questionCount = j.at("questionCount");
+    unsigned int answerTimeout = j.at("answerTimeout");
+
+    CreateRoomRequest info = { roomName, maxUsers, questionCount, answerTimeout };
+    return info;
+}
+
 /*
 * helper method 
 * get a binery message a and returns it as an std::string
