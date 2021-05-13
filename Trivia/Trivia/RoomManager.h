@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include "LoggedUser.h"
+#include "ExceptionHandler.h"
 
 typedef struct RoomData 
 {
@@ -22,6 +23,7 @@ public:
 	void addUser(LoggedUser user);
 	void removeUser(LoggedUser user);
 	std::vector<std::string> getAllUsers();
+	RoomData getMetadata() const;
 private:
 	RoomData m_metadata;
 	std::vector<LoggedUser> m_users;
