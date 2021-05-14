@@ -43,6 +43,13 @@ SignupRequest JsonRequestPacketDeserializer::deserializerSignupRequest(std::vect
     return info;
 }
 
+/*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room details to check the players in room
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room details (struct GetPlayersInRoomRequest)
+*/
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializerGetPlayersRequest(std::vector<unsigned char>& buffer)
 {
     std::string jsonStr = BinToStr(buffer);
@@ -54,6 +61,13 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializerGetPlayersReq
     return info;
 }
 
+/*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room details to join in
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room details (struct JoinRoomRequest)
+*/
 JoinRoomRequest JsonRequestPacketDeserializer::deserializerJoinRoomRequest(std::vector<unsigned char>& buffer)
 {
     std::string jsonStr = BinToStr(buffer);
@@ -65,6 +79,13 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializerJoinRoomRequest(std::
     return info;
 }
 
+/*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room creation details
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room creation details (struct CreateRoomRequest)
+*/
 CreateRoomRequest JsonRequestPacketDeserializer::deserializerCreateRoomRequest(std::vector<unsigned char>& buffer)
 {
     std::string jsonStr = BinToStr(buffer);
