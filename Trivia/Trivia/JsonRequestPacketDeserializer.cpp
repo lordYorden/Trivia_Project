@@ -44,6 +44,63 @@ SignupRequest JsonRequestPacketDeserializer::deserializerSignupRequest(std::vect
 }
 
 /*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room details to check the players in room
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room details (struct GetPlayersInRoomRequest)
+*/
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializerGetPlayersRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    unsigned int roomID = j.at("roomID");
+
+    GetPlayersInRoomRequest info = { roomID };
+    return info;
+}
+
+/*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room details to join in
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room details (struct JoinRoomRequest)
+*/
+JoinRoomRequest JsonRequestPacketDeserializer::deserializerJoinRoomRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    unsigned int roomID = j.at("roomID");
+
+    JoinRoomRequest info = { roomID };
+    return info;
+}
+
+/*
+* static function
+* the function gets a json in the form of a binery message and return
+* the room creation details
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - room creation details (struct CreateRoomRequest)
+*/
+CreateRoomRequest JsonRequestPacketDeserializer::deserializerCreateRoomRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    std::string roomName = j.at("roomName");
+    unsigned int maxUsers = j.at("maxUsers");
+    unsigned int questionCount = j.at("questionCount");
+    unsigned int answerTimeout = j.at("answerTimeout");
+
+    CreateRoomRequest info = { roomName, maxUsers, questionCount, answerTimeout };
+    return info;
+}
+
+/*
 * helper method 
 * get a binery message a and returns it as an std::string
 * input: buffer - binery message (std::vector<unsigend char>&)
