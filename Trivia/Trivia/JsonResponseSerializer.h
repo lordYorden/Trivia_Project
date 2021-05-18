@@ -33,7 +33,7 @@ struct GetPlayersInRoomResponse
 struct GetStatisticsResponse
 {
 	unsigned int status;
-	std::vector<std::string>scores;
+	std::vector<std::string> scores;
 	std::vector<std::string> stats;
 
 }typedef GetStatisticsResponse;

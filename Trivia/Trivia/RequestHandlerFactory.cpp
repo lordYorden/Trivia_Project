@@ -1,5 +1,6 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 
 /*
 * RequestHandlerFactory class constractor
@@ -8,7 +9,7 @@
 * output: none
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database):
-	m_database(database), m_loginManager(LoginManager(database))
+	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(database)
 {
 }
 
@@ -42,4 +43,19 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return this->m_loginManager;
+}
+
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+{
+	return new MenuRequestHandler(*this);
+}
+
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
+{
+	return this->m_statisticsManager;
+}
+
+RoomManager& RequestHandlerFactory::getRoomManager()
+{
+	return this->m_roomManager;
 }

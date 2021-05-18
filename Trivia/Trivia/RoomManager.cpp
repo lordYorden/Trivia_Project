@@ -76,6 +76,16 @@ std::vector<RoomData> RoomManager::getRooms()
 	return rooms;
 }
 
+Room RoomManager::getRoomById(int roomID)
+{
+	std::map<int, Room>::iterator it = this->m_rooms.find(roomID);
+	if (it != m_rooms.end())
+	{
+		return it->second;
+	}
+	throw ExceptionHandler("Error....Room dose not exist");
+}
+
 /*
 * Room Constructor
 * input: admin - the user who created the room (LoggedUser)

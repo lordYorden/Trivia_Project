@@ -38,6 +38,7 @@ public:
 	void deleteRoom(int roomID);
 	bool getRoomState(int roomID);
 	std::vector<RoomData> getRooms();
+	Room getRoomById(int roomID);
 private:
 	std::map<int, Room> m_rooms;
 };
