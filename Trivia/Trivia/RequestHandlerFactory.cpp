@@ -45,16 +45,31 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 	return this->m_loginManager;
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+/*
+* creates a Menu Request Handler
+* input: none
+* output: handler - handler to Menu requests (MenuRequestHandler*)
+*/
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser& user)
 {
-	return new MenuRequestHandler(*this);
+	return new MenuRequestHandler(*this, user);
 }
 
+/*
+* return the statistics manager of the factory
+* input: none
+* output: the factory statistics manager
+*/
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return this->m_statisticsManager;
 }
 
+/*
+* return the room manager of the factory
+* input: none
+* output: the factory room manager
+*/
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return this->m_roomManager;

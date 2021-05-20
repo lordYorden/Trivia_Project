@@ -5,6 +5,9 @@
 #include "StatisticsManager.h"
 #include "LoggedUser.h"
 #include "RoomManager.h"
+#include "IRequestHandler.h"
+#include <ctime>
+#include <chrono>
 
 class RequestHandlerFactory;
 class MenuRequestHandler : public IRequestHandler
@@ -22,7 +25,7 @@ private:
 	RequestResult getStatistics(RequestInfo info);
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
-
+	int generateRoomID(std::string roomName);
 	RequestHandlerFactory& m_handlerFactory;
 	StatisticsManager& m_statisticsManager;
 	RoomManager& m_roomManager;

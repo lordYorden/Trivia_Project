@@ -76,6 +76,11 @@ std::vector<RoomData> RoomManager::getRooms()
 	return rooms;
 }
 
+/*
+* return the room given its ID
+* input: roomID - the room identifier (int)
+* output: room - the room with th given id (Room)
+*/
 Room RoomManager::getRoomById(int roomID)
 {
 	std::map<int, Room>::iterator it = this->m_rooms.find(roomID);

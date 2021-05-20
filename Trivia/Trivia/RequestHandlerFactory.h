@@ -9,6 +9,7 @@
 
 class LoginRequestHandler;
 class MenuRequestHandler;
+
 class RequestHandlerFactory
 {
 public:
@@ -16,7 +17,7 @@ public:
 	~RequestHandlerFactory();
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
-	MenuRequestHandler* createMenuRequestHandler();
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser& user);
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
 private:
