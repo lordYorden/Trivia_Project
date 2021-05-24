@@ -130,7 +130,7 @@ std::vector<unsigned char> JsonResponseSerializer::serializeHighScoresResponse(G
     j["status"] = statistics.status;
     for (std::vector<std::string>::iterator it = statistics.scores.begin(); it != statistics.scores.end(); it++)
     {
-        highscores += *it + ", ";
+        highscores += *it + "&";
     }
     highscores = highscores.substr(0, highscores.length() - 2);
     j["Highscores"] = highscores;
