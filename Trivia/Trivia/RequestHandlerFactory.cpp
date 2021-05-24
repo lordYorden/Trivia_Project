@@ -1,5 +1,6 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 
 /*
 * RequestHandlerFactory class constractor
@@ -8,7 +9,7 @@
 * output: none
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database):
-	m_database(database), m_loginManager(LoginManager(database))
+	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(database)
 {
 }
 
@@ -42,4 +43,34 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return this->m_loginManager;
+}
+
+/*
+* creates a Menu Request Handler
+* input: none
+* output: handler - handler to Menu requests (MenuRequestHandler*)
+*/
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser& user)
+{
+	return new MenuRequestHandler(*this, user);
+}
+
+/*
+* return the statistics manager of the factory
+* input: none
+* output: the factory statistics manager
+*/
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
+{
+	return this->m_statisticsManager;
+}
+
+/*
+* return the room manager of the factory
+* input: none
+* output: the factory room manager
+*/
+RoomManager& RequestHandlerFactory::getRoomManager()
+{
+	return this->m_roomManager;
 }
