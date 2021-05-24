@@ -33,10 +33,15 @@ struct GetPlayersInRoomResponse
 struct GetStatisticsResponse
 {
 	unsigned int status;
-	std::vector<std::string>scores;
+	
 	std::vector<std::string> stats;
 
 }typedef GetStatisticsResponse;
+struct GetHighScoresResponse
+{
+	unsigned int status;
+	std::vector<std::string>scores;
+}typedef GetHighScoresResponse;
 struct JoinRoomResponse
 {
 	unsigned int status;
@@ -59,4 +64,6 @@ public:
 	static std::vector<unsigned char> serializeGetPlayersInRoomResponse(GetPlayersInRoomResponse playersInRoom);
 	static std::vector<unsigned char> serializeCreateRoomResponse(CreateRoomResponse createRoom);
 	static std::vector<unsigned char> serializeStatisticsResponse(GetStatisticsResponse statistics);
+	static std::vector<unsigned char> serializeHighScoresResponse(GetHighScoresResponse statistics);
+
 };

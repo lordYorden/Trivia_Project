@@ -111,16 +111,30 @@ std::vector<unsigned char> JsonResponseSerializer::serializeStatisticsResponse(G
     {
         stats += *it + ", ";
     }
+   
+    stats = stats.substr(0, stats.length() - 2);
+   
+    j["Statistics"] = stats;
+   
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+    
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeHighScoresResponse(GetHighScoresResponse statistics)
+{
+    std::vector<unsigned char> buffer;
+    std::string highscores = "";
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = statistics.status;
     for (std::vector<std::string>::iterator it = statistics.scores.begin(); it != statistics.scores.end(); it++)
     {
         highscores += *it + ", ";
     }
-    stats = stats.substr(0, stats.length() - 2);
     highscores = highscores.substr(0, highscores.length() - 2);
-    j["Statistics"] = stats;
     j["Highscores"] = highscores;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
-    
 }
 
