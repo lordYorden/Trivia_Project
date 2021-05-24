@@ -72,7 +72,7 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> q;
-	std::string statement = "SELECT * FROM QUESTION LIMIT " + std::to_string(num) + ";";
+	std::string statement = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(num) + ";";
 	ExecuteSqlCallback(statement, fillQuestionsCallback, &q);
 	return q;
 }
@@ -149,6 +149,9 @@ int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azC
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	(*(std::vector<std::string>*)data).push_back(azColName[0]);
+	std::strcat(azColName[1], ",");
+	std::strcat(azColName[1], azColName[4]);
+	(*(std::vector<std::string>*)data).push_back(azColName[1]);
 	return 0;
+
 }
