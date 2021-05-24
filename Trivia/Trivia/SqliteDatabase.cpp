@@ -149,6 +149,8 @@ int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azC
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	(*(std::vector<std::string>*)data).push_back(azColName[0]);
+	std::strcat(azColName[1], ",");
+	std::strcat(azColName[1], azColName[4]);
+	(*(std::vector<std::string>*)data).push_back(azColName[1]);
 	return 0;
 }
