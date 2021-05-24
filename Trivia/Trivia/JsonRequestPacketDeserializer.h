@@ -17,11 +17,35 @@ typedef struct SignupRequest
 
 }SignupRequest;
 
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomID;
+
+}GetPlayersInRoomRequest;
+
+typedef struct JoinRoomRequest
+{
+	unsigned int roomID;
+
+}JoinRoomRequest;
+
+typedef struct CreateRoomRequest
+{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeOut;
+
+}CreateRoomRequest;
+
 class JsonRequestPacketDeserializer
 {
 public:
 	static LoginRequest deserializeLoginRequest(std::vector<unsigned char>& buffer);
 	static SignupRequest deserializerSignupRequest(std::vector<unsigned char>& buffer);
+	static GetPlayersInRoomRequest deserializerGetPlayersRequest(std::vector<unsigned char>& buffer);
+	static JoinRoomRequest deserializerJoinRoomRequest(std::vector<unsigned char>& buffer);
+	static CreateRoomRequest deserializerCreateRoomRequest(std::vector<unsigned char>& buffer);
 
 private:
 	static std::string BinToStr(std::vector<unsigned char>& buffer);

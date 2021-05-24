@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
+#include "MenuRequestHandler.h"
 
 /*
 * LoginRequestHandler class constractor
@@ -39,9 +40,6 @@ bool LoginRequestHandler::isRequestRelevent(RequestInfo info)
 */
 RequestResult LoginRequestHandler::RequestHandler(RequestInfo info)
 {
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	RequestResult* requestRes = nullptr;
 	if (!isRequestRelevent(info))
 	{
 		std::string message = "Error!....Signup or Login before continue";
@@ -88,6 +86,8 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 	logRes.status = RequestId::MT_RESPONSE_OK;
 	buffer = JsonResponseSerializer::serializeLoginResponse(logRes);
 	std::cout << "Login Successful" << std::endl;
+	LoggedUser user = LoggedUser(userInfo.username);
+	newHandler = m_handlerFactory.createMenuRequestHandler(user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
