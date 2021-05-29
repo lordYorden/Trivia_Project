@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
+#include "LoginRequestHandler.h"
 #define RANDOM_NUMBER 1.5
 
 /*
@@ -43,7 +44,7 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
 	{
-		std::string message = "Error!....Signup or Login before continue";
+		std::string message = "Error!....You have to pick an option";
 		return error(message);
 	}
 
@@ -110,6 +111,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 	LoginManager loginManager = m_handlerFactory.getLoginManager();
 	loginManager.logout(m_user.getUsername());
 	std::cout << "Logout Successful" << std::endl;
+	newHandler = m_handlerFactory.createLoginRequestHandler();
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
