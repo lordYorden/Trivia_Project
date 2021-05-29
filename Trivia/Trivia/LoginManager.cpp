@@ -62,6 +62,7 @@ void LoginManager::logout(std::string name)
 		if (it->getUsername() == name)
 		{
 			m_loggedUsers.erase(it);
+			return;
 		}
 	}
 }

@@ -108,7 +108,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
-	LoginManager loginManager = m_handlerFactory.getLoginManager();
+	LoginManager& loginManager = m_handlerFactory.getLoginManager();
 	loginManager.logout(m_user.getUsername());
 	std::cout << "Logout Successful" << std::endl;
 	newHandler = m_handlerFactory.createLoginRequestHandler();
