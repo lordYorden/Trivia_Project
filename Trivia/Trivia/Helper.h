@@ -27,7 +27,7 @@ enum RequestId
 	MT_LEAVE_ROOM = 12,
 	MT_GET_ROOM_STATE = 13,
 	MT_EXIT = 99,
-	MT_ERROR = 99
+	MT_ERROR = 1
 };
 
 class Helper
