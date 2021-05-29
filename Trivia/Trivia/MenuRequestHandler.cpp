@@ -31,7 +31,7 @@ MenuRequestHandler::~MenuRequestHandler()
 */
 bool MenuRequestHandler::isRequestRelevent(RequestInfo info)
 {
-	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
+	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
 }
 
 /*
@@ -58,7 +58,9 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 		case RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST:
 			return getPlayersInRoom(info);
 		case RequestId::MT_GET_STATISTICS:
-			return getStatistics(info);
+			return getPersonalStats(info);
+		case RequestId::MT_GET_HIGHSCORES:
+			return getHighScore(info);
 		case RequestId::MT_JOIN_ROOM:
 			return joinRoom(info);
 		case RequestId::MT_CREATE_ROOM:
@@ -153,14 +155,30 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 * input: info - the getStatistics request of the user (RequestInfo)
 * output: requestRes - the response to send to the user (RequestResult)
 */
-RequestResult MenuRequestHandler::getStatistics(RequestInfo info)
+RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	std::vector<std::string> stats = m_statisticsManager.getUserStatistics(m_user.getUsername());
-	std::vector<std::string> highScore = m_statisticsManager.getHighScore();
-	GetStatisticsResponse statsRes = { RequestId::MT_RESPONSE_OK, highScore, stats};
+	GetStatisticsResponse statsRes = { RequestId::MT_RESPONSE_OK, stats};
 	buffer = JsonResponseSerializer::serializeStatisticsResponse(statsRes);
+	std::cout << "statistics for " << m_user.getUsername() << std::endl;
+	RequestResult requestRes = { buffer, newHandler };
+	return requestRes;
+}
+
+/*
+* the function handles the getHighScore requests of the user
+* input: info - the getHighScore request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
+RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
+{
+	std::vector<unsigned char> buffer;
+	IRequestHandler* newHandler = nullptr;
+	std::vector<std::string> highScores = m_statisticsManager.getHighScore();
+	GetScoresResponse highScoreRes = { RequestId::MT_RESPONSE_OK, highScores};
+	buffer = JsonResponseSerializer::serializeHighScoresResponse(highScoreRes);
 	std::cout << "statistics for " << m_user.getUsername() << std::endl;
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
