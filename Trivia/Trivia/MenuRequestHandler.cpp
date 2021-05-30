@@ -26,7 +26,7 @@ MenuRequestHandler::~MenuRequestHandler()
 }
 
 /*
-* check if the request is part of ther menu requests
+* check if the request is part of the menu requests
 * input: info - the request information (RequestInfo)
 * output: isRequestRelevent - if the request is part of ther menu requests (bool)
 */

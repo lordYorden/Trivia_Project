@@ -4,20 +4,42 @@
 #include "RequestHandlerFactory.h"
 #include "MenuRequestHandler.h"
 
+/*
+* The Constructor of Class RoomMemberRequestHandler
+* input: factory - the factory handler (RequestHandlerFactory&)
+*		,user - the user logged in (LoggedUser&)
+*		,room - the room of which the user is in (Room&)
+* output: none
+*/
 RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& factory, LoggedUser& user, Room& room):
 	RoomRequestHandler(factory, user, room)
 {
 }
 
+/*
+* The Distructor of Class RoomMemberRequestHandler
+* input: none
+* output: none
+*/
 RoomMemberRequestHandler::~RoomMemberRequestHandler()
 {
 }
 
+/*
+* check if the request is part of the room Member requests
+* input: info - the request information (RequestInfo)
+* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+*/
 bool RoomMemberRequestHandler::isRequestRelevent(RequestInfo info)
 {
 	return info.id == RequestId::MT_LEAVE_ROOM || info.id == MT_GET_ROOM_STATE;
 }
 
+/*
+* handle the Member room requests from the client
+* input: info - the request information (RequestInfo)
+* output: requestRes - the request result to send back to client (RequestResult)
+*/
 RequestResult RoomMemberRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
@@ -49,6 +71,11 @@ RequestResult RoomMemberRequestHandler::RequestHandler(RequestInfo info)
 	}
 }
 
+/*
+* the function handles the leaveRoom requests of the user
+* input: info - the leaveRoom request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;

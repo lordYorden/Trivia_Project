@@ -25,11 +25,21 @@ RoomAdminRequestHandler::~RoomAdminRequestHandler()
 {
 }
 
+/*
+* check if the request is part of the room Admin requests
+* input: info - the request information (RequestInfo)
+* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+*/
 bool RoomAdminRequestHandler::isRequestRelevent(RequestInfo info)
 {
 	return info.id == RequestId::MT_CLOSE_ROOM || info.id == RequestId::MT_START_GAME || info.id == RequestId::MT_GET_ROOM_STATE;
 }
 
+/*
+* handle the Admin room requests from the client
+* input: info - the request information (RequestInfo)
+* output: requestRes - the request result to send back to client (RequestResult)
+*/
 RequestResult RoomAdminRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
@@ -81,6 +91,11 @@ RequestResult RoomAdminRequestHandler::error(const std::string& message)
 	return requestRes;
 }
 
+/*
+* the function handles the closeRoom requests of the user
+* input: info - the closeRoom request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
@@ -95,6 +110,11 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 	return requestRes;
 }
 
+/*
+* the function handles the startGame requests of the user
+* input: info - the startGame request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
