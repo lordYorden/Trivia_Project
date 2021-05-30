@@ -36,6 +36,7 @@ void LoginManager::signup(std::string name, std::string password, std::string ma
 	else
 	{
 		m_database->addNewUser(name, password, mail);
+		m_loggedUsers.push_back(LoggedUser(name));
 	}
 }
 
