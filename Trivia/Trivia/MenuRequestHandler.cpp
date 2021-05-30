@@ -112,6 +112,8 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 	loginManager.logout(m_user.getUsername());
 	std::cout << "Logout Successful" << std::endl;
 	newHandler = m_handlerFactory.createLoginRequestHandler();
+	LogoutResponse logoutRes = { RequestId::MT_RESPONSE_OK };
+	buffer = JsonResponseSerializer::serializeLogoutResponse(logoutRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
