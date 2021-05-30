@@ -147,7 +147,7 @@ std::vector<unsigned char> JsonResponseSerializer::serializeCloseRoomResponse(Cl
     return buffer;
 }
 
-std::vector<unsigned char> JsonResponseSerializer::serializeJoinRoomResponse(StartGameResponse response)
+std::vector<unsigned char> JsonResponseSerializer::serializeStartGameResponse(StartGameResponse response)
 {
     std::vector<unsigned char> buffer;
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);

@@ -1,4 +1,5 @@
 #pragma once
+#include "RoomRequestHandler.h"
 #include "RoomManager.h"
 #include "IRequestHandler.h"
 #include "RoomRequestHandler.h"
@@ -6,15 +7,15 @@
 #include "JsonResponseSerializer.h"
 
 class RequestHandlerFactory;
-class RoomAdminRequestHandler : public RoomRequestHandler
+class RoomMemberRequestHandler : public RoomRequestHandler
 {
 public:
-	RoomAdminRequestHandler(RequestHandlerFactory& factory, LoggedUser& user, Room& room);
-	~RoomAdminRequestHandler();
+	RoomMemberRequestHandler(RequestHandlerFactory& factory, LoggedUser& user, Room& room);
+	~RoomMemberRequestHandler();
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
 private:
+	RequestResult leaveRoom(RequestInfo info);
 	RequestResult error(const std::string& message);
-	RequestResult closeRoom(RequestInfo info);
-	RequestResult startGame(RequestInfo info);
 };
+

@@ -145,6 +145,8 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="ExceptionHandler.h" />
     <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="RoomRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonResponseSerializer.h" />
@@ -168,6 +170,8 @@
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponseSerializer.cpp" />
     <ClCompile Include="LoginManager.cpp" />

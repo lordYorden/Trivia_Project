@@ -91,8 +91,7 @@ public:
 	static std::vector<unsigned char> serializeStatisticsResponse(GetStatisticsResponse statistics);
 	static std::vector<unsigned char> serializeHighScoresResponse(GetScoresResponse scores);
 	static std::vector<unsigned char> serializeCloseRoomResponse(CloseRoomResponse response);
-	static std::vector<unsigned char> serializeJoinRoomResponse(StartGameResponse response);
+	static std::vector<unsigned char> serializeStartGameResponse(StartGameResponse response);
 	static std::vector<unsigned char> serializeGetRoomStateResponse(GetRoomStateResponse response);
 	static std::vector<unsigned char> serializeLeaveRoomResponse(LeaveRoomResponse response);
-	
 };

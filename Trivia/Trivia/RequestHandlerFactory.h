@@ -9,6 +9,8 @@
 
 class LoginRequestHandler;
 class MenuRequestHandler;
+class RoomAdminRequestHandler;
+class RoomMemberRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -20,6 +22,8 @@ public:
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser& user);
 	StatisticsManager& getStatisticsManager();
 	RoomManager& getRoomManager();
+	RoomAdminRequestHandler* createRoomAdminRequestHandler(int RoomID, LoggedUser& user);
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(int RoomID, LoggedUser& user);
 private:
 	LoginManager m_loginManager;
 	IDatabase* m_database;
