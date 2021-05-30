@@ -24,6 +24,7 @@ public:
 	void removeUser(LoggedUser user);
 	std::vector<std::string> getAllUsers();
 	RoomData getMetadata() const;
+	void setRoomState(bool isActive);
 private:
 	RoomData m_metadata;
 	std::vector<LoggedUser> m_users;
@@ -38,7 +39,7 @@ public:
 	void deleteRoom(int roomID);
 	bool getRoomState(int roomID);
 	std::vector<RoomData> getRooms();
-	Room getRoomById(int roomID);
+	Room& getRoomById(int roomID);
 private:
 	std::map<int, Room> m_rooms;
 };

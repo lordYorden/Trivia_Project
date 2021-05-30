@@ -26,7 +26,7 @@ MenuRequestHandler::~MenuRequestHandler()
 }
 
 /*
-* check if the request is part of ther menu requests
+* check if the request is part of the menu requests
 * input: info - the request information (RequestInfo)
 * output: isRequestRelevent - if the request is part of ther menu requests (bool)
 */
@@ -112,6 +112,8 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 	loginManager.logout(m_user.getUsername());
 	std::cout << "Logout Successful" << std::endl;
 	newHandler = m_handlerFactory.createLoginRequestHandler();
+	LogoutResponse logoutRes = { RequestId::MT_RESPONSE_OK };
+	buffer = JsonResponseSerializer::serializeLogoutResponse(logoutRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }

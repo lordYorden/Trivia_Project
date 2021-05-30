@@ -11,8 +11,8 @@
 *		,room - the room of which the user is in (Room&)
 * output: none
 */
-RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& Factory, LoggedUser& user, Room& room):
-	IRequestHandler(), m_handlerFactory(Factory), m_roomManager(Factory.getRoomManager()), m_room(room), m_user(user)
+RoomAdminRequestHandler::RoomAdminRequestHandler(RequestHandlerFactory& factory, LoggedUser& user, Room& room):
+	RoomRequestHandler(factory, user, room)
 {
 }
 
@@ -25,11 +25,21 @@ RoomAdminRequestHandler::~RoomAdminRequestHandler()
 {
 }
 
+/*
+* check if the request is part of the room Admin requests
+* input: info - the request information (RequestInfo)
+* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+*/
 bool RoomAdminRequestHandler::isRequestRelevent(RequestInfo info)
 {
 	return info.id == RequestId::MT_CLOSE_ROOM || info.id == RequestId::MT_START_GAME || info.id == RequestId::MT_GET_ROOM_STATE;
 }
 
+/*
+* handle the Admin room requests from the client
+* input: info - the request information (RequestInfo)
+* output: requestRes - the request result to send back to client (RequestResult)
+*/
 RequestResult RoomAdminRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
@@ -44,10 +54,10 @@ RequestResult RoomAdminRequestHandler::RequestHandler(RequestInfo info)
 		{
 		case RequestId::MT_CLOSE_ROOM:
 			return closeRoom(info);
-		/*case RequestId::MT_START_GAME:
+		case RequestId::MT_START_GAME:
 			return startGame(info);
 		case RequestId::MT_GET_ROOM_STATE:
-			return getRoomState(info);*/
+			return getRoomState(info);
 		}
 	}
 	catch (nlohmann::json::parse_error& e)
@@ -81,6 +91,11 @@ RequestResult RoomAdminRequestHandler::error(const std::string& message)
 	return requestRes;
 }
 
+/*
+* the function handles the closeRoom requests of the user
+* input: info - the closeRoom request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
@@ -88,8 +103,28 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 	int roomID = m_room.getMetadata().id;
 	m_roomManager.deleteRoom(roomID);
 	CloseRoomResponse closeRes = { RequestId::MT_RESPONSE_OK };
-	std::cout << "the room " << roomID << " has been closed";
+	std::cout << "the room " << roomID << " has been closed" << std::endl;
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
+	buffer = JsonResponseSerializer::serializeCloseRoomResponse(closeRes);
+	RequestResult requestRes = { buffer, newHandler };
+	return requestRes;
+}
+
+/*
+* the function handles the startGame requests of the user
+* input: info - the startGame request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
+RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
+{
+	std::vector<unsigned char> buffer;
+	IRequestHandler* newHandler = nullptr;
+	int roomID = m_room.getMetadata().id;
+	m_room.setRoomState(true);
+	std::cout << "the room " << roomID << " has started the game" << std::endl;
+	StartGameResponse startRes = { RequestId::MT_RESPONSE_OK };
+	//create Game Handler
+	buffer = JsonResponseSerializer::serializeStartGameResponse(startRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
