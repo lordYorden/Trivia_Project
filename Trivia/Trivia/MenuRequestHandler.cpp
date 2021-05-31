@@ -199,7 +199,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	IRequestHandler* newHandler = nullptr;
 	JoinRoomRequest joinRoomReq = JsonRequestPacketDeserializer::deserializerJoinRoomRequest(info.buffer);
 	std::cout << "Room ID: " << joinRoomReq.roomID << std::endl;
-	Room room = m_roomManager.getRoomById(joinRoomReq.roomID);
+	Room& room = m_roomManager.getRoomById(joinRoomReq.roomID);
 	room.addUser(m_user);
 	std::cout << "Room ID: " << joinRoomReq.roomID << std::endl;
 	JoinRoomResponse joinRes = {RequestId::MT_RESPONSE_OK};
