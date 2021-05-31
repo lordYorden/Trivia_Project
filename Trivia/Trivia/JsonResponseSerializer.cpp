@@ -46,15 +46,21 @@ std::vector<unsigned char> JsonResponseSerializer::serializeLogoutResponse(Logou
 std::vector<unsigned char> JsonResponseSerializer::serializeGetRoomsResponse(GetRoomsResponse rooms)
 {
     std::vector<unsigned char> buffer;
-    std::string roomsStr = "";
+    std::string roomsStr = "[";
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = rooms.status;
     for (std::vector<RoomData>::iterator it = rooms.rooms.begin(); it != rooms.rooms.end(); it++)
     {
-        roomsStr += (it->name + "-");
+        roomsStr += ConvertHelper::roomDataToJsonStr(*it);
+        if (it + 1 != rooms.rooms.end())
+        {
+            roomsStr += "-";
+        }
     }
-    roomsStr = roomsStr.substr(0, roomsStr.length() - 1);
+    roomsStr += "]";
+    std::cout << roomsStr << std::endl;
+    /*roomsStr = roomsStr.substr(0, roomsStr.length() - 1);*/
     j["Rooms"] = roomsStr;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;

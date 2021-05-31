@@ -57,3 +57,11 @@ void ConvertHelper::fillingVector(std::vector<unsigned char>& buffer, nlohmann::
 	}
 }
 
+std::string ConvertHelper::roomDataToJsonStr(RoomData& metadata)
+{
+	nlohmann::json j;
+	j["name"] = metadata.name;
+	j["id"] = metadata.id;
+	return j.dump();
+}
+
