@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
+#include <exception>
 
 /*
 * The Constructor of Class RoomRequestHandler
@@ -33,8 +34,17 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
+	int stutus = RequestId::MT_RESPONSE_OK;
+	try
+	{
+		m_roomManager.getRoomById(m_room.getMetadata().id);
+	}
+	catch (ExceptionHandler e)
+	{
+		stutus = MT_ERROR;
+	}
 	RoomData metadata = m_room.getMetadata();
-	GetRoomStateResponse stateRes = { RequestId::MT_RESPONSE_OK, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
+	GetRoomStateResponse stateRes = { stutus, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
 	std::cout << "sended data on room " << metadata.id << std::endl;
 	buffer = JsonResponseSerializer::serializeGetRoomStateResponse(stateRes);
 	RequestResult requestRes = { buffer, newHandler };
