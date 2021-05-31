@@ -7,8 +7,8 @@
 * input: factory - the Request Handler Factory (RequestHandlerFactory&)
 * output: none
 */
-Communicator::Communicator(RequestHandlerFactory& factory):
-	m_handlerFactory(factory)
+Communicator::Communicator(RequestHandlerFactory& factory, std::mutex& mutex):
+	m_handlerFactory(factory), m_locker(mutex)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -44,6 +44,7 @@ void Communicator::startHandleRequests(std::string ip, int port)
 {
 	bindAndListen(ip, port);
 }
+
 
 /*
 * the connection thread that listen in the agreed port 
@@ -111,6 +112,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		do
 		{
 			reqInfo = Helper::getUserRequestInfo(clientSocket);
+			m_locker.lock();
 			reqRes = handler->RequestHandler(reqInfo);
 			if (reqRes.newHandler != nullptr)
 			{
@@ -118,6 +120,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			}
 			buffer = reqRes.responseBuffer;
 			Helper::sendData(clientSocket, buffer);
+			m_locker.unlock();
 		} while (reqInfo.id != RequestId::MT_EXIT);
 
 		closesocket(clientSocket);

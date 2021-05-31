@@ -82,7 +82,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	IRequestHandler* newHandler = nullptr;
 	int roomID = m_room.getMetadata().id;
 	m_room.removeUser(m_user.getUsername());
-	std::cout << "user " << m_user.getUsername() << "has left " << "room " << roomID << std::endl;
+	std::cout << "user " << m_user.getUsername() << " has left " << "room " << roomID << std::endl;
 	LeaveRoomResponse leaveRes = { RequestId::MT_RESPONSE_OK };
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	buffer = JsonResponseSerializer::serializeLeaveRoomResponse(leaveRes);

@@ -47,7 +47,7 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 	}
 	RoomData metadata = m_room.getMetadata();
 	GetRoomStateResponse stateRes = { stutus, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
-	std::cout << "sended data on room " << metadata.id << std::endl;
+	std::cout << "sended data on room " << metadata.id << " to " << m_user.getUsername() << std::endl;
 	buffer = JsonResponseSerializer::serializeGetRoomStateResponse(stateRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;

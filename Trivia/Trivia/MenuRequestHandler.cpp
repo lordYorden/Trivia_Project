@@ -3,6 +3,8 @@
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 #define RANDOM_NUMBER 1.5
 
 /*
@@ -204,6 +206,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	std::cout << "Room ID: " << joinRoomReq.roomID << std::endl;
 	JoinRoomResponse joinRes = {RequestId::MT_RESPONSE_OK};
 	buffer = JsonResponseSerializer::serializeJoinRoomsResponse(joinRes);
+	newHandler = m_handlerFactory.createRoomMemberRequestHandler(joinRoomReq.roomID, m_user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
@@ -224,7 +227,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	std::cout << m_user.getUsername() << " Has created Room " << roomID << "!" << std::endl;
 	CreateRoomResponse createRoomRes = { roomID};
 	buffer = JsonResponseSerializer::serializeCreateRoomResponse(createRoomRes);
-	//new room admin handler
+	newHandler = m_handlerFactory.createRoomAdminRequestHandler(roomID, m_user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
