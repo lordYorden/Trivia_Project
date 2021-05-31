@@ -16,7 +16,7 @@ protected:
 	RequestResult getRoomState(RequestInfo info);
 	RequestHandlerFactory& m_handlerFactory;
 	RoomManager& m_roomManager;
-	Room& m_room;
+	Room m_room;
 	LoggedUser m_user;
 };
 

@@ -38,7 +38,7 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 	int stutus = RequestId::MT_RESPONSE_OK;
 	try
 	{
-		m_roomManager.getRoomById(m_room.getMetadata().id);
+		m_room = m_roomManager.getRoomById(m_room.getMetadata().id) ;
 	}
 	catch (ExceptionHandler e)
 	{

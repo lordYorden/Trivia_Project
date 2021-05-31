@@ -44,7 +44,7 @@ RequestResult RoomMemberRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
 	{
-		std::string message = "Error!....Signup or Login before continue";
+		std::string message = "Error!....Wait for start or leave Room to continue";
 		return error(message);
 	}
 
