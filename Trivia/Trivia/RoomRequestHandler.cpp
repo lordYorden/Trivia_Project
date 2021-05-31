@@ -2,6 +2,7 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
+#include "MenuRequestHandler.h"
 #include <exception>
 
 /*
@@ -42,6 +43,7 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 	catch (ExceptionHandler e)
 	{
 		stutus = MT_ERROR;
+		newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	}
 	RoomData metadata = m_room.getMetadata();
 	GetRoomStateResponse stateRes = { stutus, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
