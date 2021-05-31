@@ -222,8 +222,9 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	RoomData metadata = {roomID, createRoomReq.roomName, createRoomReq.maxUsers, createRoomReq.questionCount, createRoomReq.answerTimeOut, false};
 	m_roomManager.createRoom(m_user, metadata);
 	std::cout << m_user.getUsername() << " Has created Room " << roomID << "!" << std::endl;
-	CreateRoomResponse createRoomRes = { RequestId::MT_RESPONSE_OK };
+	CreateRoomResponse createRoomRes = { roomID};
 	buffer = JsonResponseSerializer::serializeCreateRoomResponse(createRoomRes);
+	//new room admin handler
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
