@@ -93,20 +93,20 @@ struct SubmitAnswerResponse
 	unsigned int correctAnswerId;
 
 }typedef SubmitAnswerResponse;
-struct GetGameResultsResponse
-{
-	unsigned int status;
-	std::vector<PlayerResults> results;
-
-}typedef GetGameResultsResponse;
 struct PlayerResults
 {
 	std::string username;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
-	
+
 }typedef PlayerResults;
+struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+
+}typedef GetGameResultsResponse;
 
 
 class JsonResponseSerializer
