@@ -11,11 +11,12 @@
 #include <Ws2tcpip.h>
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include <mutex>
 
 class Communicator
 {
 public:
-	Communicator(RequestHandlerFactory& factory);
+	Communicator(RequestHandlerFactory& factory, std::mutex& mutex);
 	~Communicator();
 	void startHandleRequests(std::string ip, int port);
 private:
@@ -27,4 +28,5 @@ private:
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	RequestHandlerFactory& m_handlerFactory;
+	std::mutex& m_locker;
 };

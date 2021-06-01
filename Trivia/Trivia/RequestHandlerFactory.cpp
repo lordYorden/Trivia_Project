@@ -1,6 +1,9 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include "RoomRequestHandler.h"
 
 /*
 * RequestHandlerFactory class constractor
@@ -73,4 +76,24 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return this->m_roomManager;
+}
+
+/*
+* creates a Room Admin Request Handler
+* input: none
+* output: handler - handler to mannage client login (RoomAdminRequestHandler*)
+*/
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int RoomID, LoggedUser& user)
+{
+	return new RoomAdminRequestHandler(*this, user, m_roomManager.getRoomById(RoomID));
+}
+
+/*
+* creates a Room Member Request Handler
+* input: none
+* output: handler - handler to mannage client login (RoomMemberRequestHandler*)
+*/
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(int RoomID, LoggedUser& user)
+{
+	return new RoomMemberRequestHandler(*this, user, m_roomManager.getRoomById(RoomID));
 }

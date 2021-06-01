@@ -22,13 +22,14 @@ private:
 	RequestResult signout(RequestInfo info);
 	RequestResult getRooms(RequestInfo info);
 	RequestResult getPlayersInRoom(RequestInfo info);
-	RequestResult getStatistics(RequestInfo info);
+	RequestResult getPersonalStats(RequestInfo info);
+	RequestResult getHighScore(RequestInfo info);
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
 	int generateRoomID(std::string roomName);
 	RequestHandlerFactory& m_handlerFactory;
 	StatisticsManager& m_statisticsManager;
 	RoomManager& m_roomManager;
-	LoggedUser& m_user;
+	LoggedUser m_user;
 };
 

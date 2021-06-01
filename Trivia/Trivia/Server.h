@@ -17,4 +17,5 @@ private:
 	int _port;
 	RequestHandlerFactory m_hadlerFactory;
 	IDatabase* m_database;
+	std::mutex m_locker;
 };

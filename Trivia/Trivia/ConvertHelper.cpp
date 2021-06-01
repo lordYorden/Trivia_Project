@@ -57,3 +57,14 @@ void ConvertHelper::fillingVector(std::vector<unsigned char>& buffer, nlohmann::
 	}
 }
 
+std::string ConvertHelper::roomDataToJsonStr(RoomData& metadata)
+{
+	nlohmann::json j;
+	j["name"] = metadata.name;
+	j["id"] = metadata.id;
+	j["maxPlayers"] = metadata.maxPlayers;
+	j["questionCount"] = metadata.numOfQuestionsInGame;
+	j["timePerQuestion"] = metadata.timePerQuestion;
+	return j.dump();
+}
+

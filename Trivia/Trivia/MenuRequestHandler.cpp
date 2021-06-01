@@ -2,6 +2,9 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
+#include "LoginRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 #define RANDOM_NUMBER 1.5
 
 /*
@@ -25,13 +28,13 @@ MenuRequestHandler::~MenuRequestHandler()
 }
 
 /*
-* check if the request is part of ther menu requests
+* check if the request is part of the menu requests
 * input: info - the request information (RequestInfo)
 * output: isRequestRelevent - if the request is part of ther menu requests (bool)
 */
 bool MenuRequestHandler::isRequestRelevent(RequestInfo info)
 {
-	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
+	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
 }
 
 /*
@@ -43,7 +46,7 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 {
 	if (!isRequestRelevent(info))
 	{
-		std::string message = "Error!....Signup or Login before continue";
+		std::string message = "Error!....You have to pick an option";
 		return error(message);
 	}
 
@@ -58,7 +61,9 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 		case RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST:
 			return getPlayersInRoom(info);
 		case RequestId::MT_GET_STATISTICS:
-			return getStatistics(info);
+			return getPersonalStats(info);
+		case RequestId::MT_GET_HIGHSCORES:
+			return getHighScore(info);
 		case RequestId::MT_JOIN_ROOM:
 			return joinRoom(info);
 		case RequestId::MT_CREATE_ROOM:
@@ -105,9 +110,12 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
-	LoginManager loginManager = m_handlerFactory.getLoginManager();
+	LoginManager& loginManager = m_handlerFactory.getLoginManager();
 	loginManager.logout(m_user.getUsername());
 	std::cout << "Logout Successful" << std::endl;
+	newHandler = m_handlerFactory.createLoginRequestHandler();
+	LogoutResponse logoutRes = { RequestId::MT_RESPONSE_OK };
+	buffer = JsonResponseSerializer::serializeLogoutResponse(logoutRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
@@ -153,14 +161,30 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 * input: info - the getStatistics request of the user (RequestInfo)
 * output: requestRes - the response to send to the user (RequestResult)
 */
-RequestResult MenuRequestHandler::getStatistics(RequestInfo info)
+RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	std::vector<std::string> stats = m_statisticsManager.getUserStatistics(m_user.getUsername());
-	std::vector<std::string> highScore = m_statisticsManager.getHighScore();
-	GetStatisticsResponse statsRes = { RequestId::MT_RESPONSE_OK, highScore, stats};
+	GetStatisticsResponse statsRes = { RequestId::MT_RESPONSE_OK, stats};
 	buffer = JsonResponseSerializer::serializeStatisticsResponse(statsRes);
+	std::cout << "statistics for " << m_user.getUsername() << std::endl;
+	RequestResult requestRes = { buffer, newHandler };
+	return requestRes;
+}
+
+/*
+* the function handles the getHighScore requests of the user
+* input: info - the getHighScore request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
+RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
+{
+	std::vector<unsigned char> buffer;
+	IRequestHandler* newHandler = nullptr;
+	std::vector<std::string> highScores = m_statisticsManager.getHighScore();
+	GetScoresResponse highScoreRes = { RequestId::MT_RESPONSE_OK, highScores};
+	buffer = JsonResponseSerializer::serializeHighScoresResponse(highScoreRes);
 	std::cout << "statistics for " << m_user.getUsername() << std::endl;
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
@@ -177,11 +201,12 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	IRequestHandler* newHandler = nullptr;
 	JoinRoomRequest joinRoomReq = JsonRequestPacketDeserializer::deserializerJoinRoomRequest(info.buffer);
 	std::cout << "Room ID: " << joinRoomReq.roomID << std::endl;
-	Room room = m_roomManager.getRoomById(joinRoomReq.roomID);
+	Room& room = m_roomManager.getRoomById(joinRoomReq.roomID);
 	room.addUser(m_user);
 	std::cout << "Room ID: " << joinRoomReq.roomID << std::endl;
 	JoinRoomResponse joinRes = {RequestId::MT_RESPONSE_OK};
 	buffer = JsonResponseSerializer::serializeJoinRoomsResponse(joinRes);
+	newHandler = m_handlerFactory.createRoomMemberRequestHandler(joinRoomReq.roomID, m_user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
@@ -199,9 +224,10 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	int roomID = generateRoomID(createRoomReq.roomName);
 	RoomData metadata = {roomID, createRoomReq.roomName, createRoomReq.maxUsers, createRoomReq.questionCount, createRoomReq.answerTimeOut, false};
 	m_roomManager.createRoom(m_user, metadata);
-	std::cout << m_user.getUsername() << "Has created Room " << roomID << "!" << std::endl;
-	CreateRoomResponse createRoomRes = { RequestId::MT_RESPONSE_OK };
+	std::cout << m_user.getUsername() << " Has created Room " << roomID << "!" << std::endl;
+	CreateRoomResponse createRoomRes = { roomID};
 	buffer = JsonResponseSerializer::serializeCreateRoomResponse(createRoomRes);
+	newHandler = m_handlerFactory.createRoomAdminRequestHandler(roomID, m_user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
