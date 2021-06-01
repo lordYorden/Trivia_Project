@@ -2,6 +2,8 @@
 #include "sqlite3.h"
 #include "Question.h"
 #include <iostream>
+#include <exception>
+#include "ExceptionHandler.h"
 #include <list>
 #include <string>
 void SqliteDatabase::open()
@@ -137,7 +139,14 @@ int SqliteDatabase::fillQuestionsCallback(void* data, int argc, char** argv, cha
 
 int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*(float*)data = std::stof(azColName[0]);
+	try
+	{
+		*(float*)data = std::stof(azColName[0]);
+	}
+	catch (std::exception& e)
+	{
+		throw ExceptionHandler("Error...User wasn't found");
+	}
 	return 0;
 }
 

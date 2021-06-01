@@ -81,7 +81,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	int roomID = m_room.getMetadata().id;
-	m_room.removeUser(m_user.getUsername());
+	m_roomManager.getRoomById(m_room.getMetadata().id).removeUser(m_user);
 	std::cout << "user " << m_user.getUsername() << " has left " << "room " << roomID << std::endl;
 	LeaveRoomResponse leaveRes = { RequestId::MT_RESPONSE_OK };
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
