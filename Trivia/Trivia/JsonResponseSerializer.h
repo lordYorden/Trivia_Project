@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "json.hpp"
+#include <map>
 #include "RoomManager.h"
 struct LoginResponse
 {
@@ -75,6 +76,37 @@ struct LeaveRoomResponse
 {
 	unsigned int status;
 }typedef LeaveRoomResponse;
+struct LeaveGameResponse
+{
+	unsigned int status;
+}typedef LeaveGameResponse;
+struct GetQuestionResponse
+{
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, std::string> answers;
+	
+}typedef GetQuestionResponse;
+struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerId;
+
+}typedef SubmitAnswerResponse;
+struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+
+}typedef GetGameResultsResponse;
+struct PlayerResults
+{
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+	
+}typedef PlayerResults;
 
 
 class JsonResponseSerializer
@@ -94,4 +126,9 @@ public:
 	static std::vector<unsigned char> serializeStartGameResponse(StartGameResponse response);
 	static std::vector<unsigned char> serializeGetRoomStateResponse(GetRoomStateResponse response);
 	static std::vector<unsigned char> serializeLeaveRoomResponse(LeaveRoomResponse response);
+	static std::vector<unsigned char> serializeLeaveGameResponse(LeaveGameResponse response);
+	static std::vector<unsigned char> serializeGetQuestionResponse(GetQuestionResponse response);
+	static std::vector<unsigned char> serializeSubmitAnswerResponse(SubmitAnswerResponse response);
+	static std::vector<unsigned char> serializeGetGameResultsResponse(GetGameResultsResponse response);
+	
 };
