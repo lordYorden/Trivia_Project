@@ -46,15 +46,21 @@ std::vector<unsigned char> JsonResponseSerializer::serializeLogoutResponse(Logou
 std::vector<unsigned char> JsonResponseSerializer::serializeGetRoomsResponse(GetRoomsResponse rooms)
 {
     std::vector<unsigned char> buffer;
-    std::string roomsStr = "";
+    std::string roomsStr = "[";
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = rooms.status;
     for (std::vector<RoomData>::iterator it = rooms.rooms.begin(); it != rooms.rooms.end(); it++)
     {
-        roomsStr += (it->name + ", ");
+        roomsStr += ConvertHelper::roomDataToJsonStr(*it);
+        if (it + 1 != rooms.rooms.end())
+        {
+            roomsStr += "-";
+        }
     }
-    roomsStr = roomsStr.substr(0, roomsStr.length() - 2);
+    roomsStr += "]";
+    std::cout << roomsStr << std::endl;
+    /*roomsStr = roomsStr.substr(0, roomsStr.length() - 1);*/
     j["Rooms"] = roomsStr;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
@@ -80,10 +86,10 @@ std::vector<unsigned char> JsonResponseSerializer::serializeGetPlayersInRoomResp
     nlohmann::json j;
     for (std::vector<std::string>::iterator it = playersInRoom.players.begin(); it != playersInRoom.players.end(); it++)
     {
-        players += *it + ", ";
+        players += *it + "-";
 
     }
-    players = players.substr(0, players.length() - 2);
+    players = players.substr(0, players.length() - 1);
     j["Players"] = players;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
@@ -103,24 +109,88 @@ std::vector<unsigned char> JsonResponseSerializer::serializeStatisticsResponse(G
 {
     std::vector<unsigned char> buffer;
     std::string stats = "";
-    std::string highscores = "";
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = statistics.status;
     for (std::vector<std::string>::iterator it = statistics.stats.begin(); it != statistics.stats.end(); it++)
     {
-        stats += *it + ", ";
+        stats += *it + "-";
     }
-    for (std::vector<std::string>::iterator it = statistics.scores.begin(); it != statistics.scores.end(); it++)
-    {
-        highscores += *it + ", ";
-    }
-    stats = stats.substr(0, stats.length() - 2);
-    highscores = highscores.substr(0, highscores.length() - 2);
+
+    stats = stats.substr(0, stats.length() - 1);
     j["Statistics"] = stats;
-    j["Highscores"] = highscores;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
     
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeHighScoresResponse(GetScoresResponse scores)
+{
+    std::vector<unsigned char> buffer;
+    std::string stats = "";
+    std::string highscores = "";
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = scores.status;
+    
+    for (std::vector<std::string>::iterator it = scores.scores.begin(); it != scores.scores.end(); it++)
+    {
+        highscores += *it + "-";
+    }
+    highscores = highscores.substr(0, highscores.length() - 1);
+    j["Highscores"] = highscores;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeCloseRoomResponse(CloseRoomResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeStartGameResponse(StartGameResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetRoomStateResponse(GetRoomStateResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    j["hasGameBegun"] = response.hasGameBegun;
+    j["questionCount"] = response.questionCount;
+    j["answerTimeout"] = response.answerTimeout;
+    std::string players = "";
+    for (std::vector<std::string>::iterator it = response.players.begin(); it != response.players.end(); it++)
+    {
+        players += *it + "-";
+    }
+    players = players.substr(0, players.length() - 1);
+    j["players"] = players;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeLeaveRoomResponse(LeaveRoomResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
 }
 

@@ -108,6 +108,8 @@ RequestResult LoginRequestHandler::signup(RequestInfo info)
 	signRes.status = RequestId::MT_RESPONSE_OK;
 	buffer = JsonResponseSerializer::serializeSignupResponse(signRes);
 	std::cout << "Signup Successful" << std::endl;
+	LoggedUser user = LoggedUser(userInfo.username);
+	newHandler = m_handlerFactory.createMenuRequestHandler(user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }

@@ -81,7 +81,7 @@ std::vector<RoomData> RoomManager::getRooms()
 * input: roomID - the room identifier (int)
 * output: room - the room with th given id (Room)
 */
-Room RoomManager::getRoomById(int roomID)
+Room& RoomManager::getRoomById(int roomID)
 {
 	std::map<int, Room>::iterator it = this->m_rooms.find(roomID);
 	if (it != m_rooms.end())
@@ -157,4 +157,14 @@ std::vector<std::string> Room::getAllUsers()
 RoomData Room::getMetadata() const
 {
 	return this->m_metadata;
+}
+
+/*
+* sets the room is Active metadata
+* input: isActive - whether a game has started or not (bool)
+* output: void
+*/
+void Room::setRoomState(bool isActive)
+{
+	this->m_metadata.isActive = isActive;
 }

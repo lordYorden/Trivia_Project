@@ -8,9 +8,9 @@
 *		,database - the db of which the server is storing its data in (IDatabase*)
 * output: none
 */
-Server::Server(std::string& ip, int port, IDatabase* database):
-	_ip(ip), _port(port), m_database(database), 
-	m_hadlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(m_hadlerFactory))
+Server::Server(std::string& ip, int port, IDatabase* database) :
+	_ip(ip), _port(port), m_database(database),
+	m_hadlerFactory(RequestHandlerFactory(database)), m_communicator(m_hadlerFactory, m_locker)
 {
 }
 

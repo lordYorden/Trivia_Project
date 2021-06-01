@@ -145,6 +145,8 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="ExceptionHandler.h" />
     <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="RoomMemberRequestHandler.h" />
+    <ClInclude Include="RoomRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="JsonResponseSerializer.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
+    <ClInclude Include="RoomAdminRequestHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
@@ -167,12 +170,15 @@
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="RoomMemberRequestHandler.cpp" />
+    <ClCompile Include="RoomRequestHandler.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="JsonResponseSerializer.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Source.cpp" />

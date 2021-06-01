@@ -2,6 +2,8 @@
 #include "sqlite3.h"
 #include "Question.h"
 #include <iostream>
+#include <exception>
+#include "ExceptionHandler.h"
 #include <list>
 #include <string>
 void SqliteDatabase::open()
@@ -72,7 +74,7 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> q;
-	std::string statement = "SELECT * FROM QUESTION LIMIT " + std::to_string(num) + ";";
+	std::string statement = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(num) + ";";
 	ExecuteSqlCallback(statement, fillQuestionsCallback, &q);
 	return q;
 }
@@ -137,7 +139,14 @@ int SqliteDatabase::fillQuestionsCallback(void* data, int argc, char** argv, cha
 
 int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*(float*)data = std::stof(azColName[0]);
+	try
+	{
+		*(float*)data = std::stof(azColName[0]);
+	}
+	catch (std::exception& e)
+	{
+		throw ExceptionHandler("Error...User wasn't found");
+	}
 	return 0;
 }
 
@@ -149,6 +158,9 @@ int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azC
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	(*(std::vector<std::string>*)data).push_back(azColName[0]);
+	std::strcat(azColName[1], "=");
+	std::strcat(azColName[1], azColName[4]);
+	(*(std::vector<std::string>*)data).push_back(azColName[1]);
 	return 0;
+
 }

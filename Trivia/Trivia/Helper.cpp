@@ -1,6 +1,6 @@
 #include "Helper.h"
 #define DATA_LEN 4
-#define REQUEST_ID_LEN 1
+#define REQUEST_ID_LEN 2
 
 /*
 * orgenize the process of reciveing a message

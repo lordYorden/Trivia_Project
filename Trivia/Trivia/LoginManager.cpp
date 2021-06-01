@@ -36,6 +36,7 @@ void LoginManager::signup(std::string name, std::string password, std::string ma
 	else
 	{
 		m_database->addNewUser(name, password, mail);
+		m_loggedUsers.push_back(LoggedUser(name));
 	}
 }
 
@@ -62,6 +63,7 @@ void LoginManager::logout(std::string name)
 		if (it->getUsername() == name)
 		{
 			m_loggedUsers.erase(it);
+			return;
 		}
 	}
 }
