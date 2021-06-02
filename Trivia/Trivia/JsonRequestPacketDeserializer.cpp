@@ -101,6 +101,23 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializerCreateRoomRequest(s
 }
 
 /*
+* static function
+* the function gets a json in the form of a binery message and return
+* the submit answer details
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - submit answer details (struct SubmitAnswerRequest)
+*/
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    int answerID = j.at("answerID");
+    SubmitAnswerRequest info = { answerID };
+    return info;
+}
+
+/*
 * helper method 
 * get a binery message a and returns it as an std::string
 * input: buffer - binery message (std::vector<unsigend char>&)
