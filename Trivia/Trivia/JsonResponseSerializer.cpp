@@ -194,3 +194,74 @@ std::vector<unsigned char> JsonResponseSerializer::serializeLeaveRoomResponse(Le
     return buffer;
 }
 
+std::vector<unsigned char> JsonResponseSerializer::serializeLeaveGameResponse(LeaveGameResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetQuestionResponse(GetQuestionResponse response)
+{
+    std::string answers = "";
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    if (response.status == 1)
+    {
+        j["question"] = response.question;
+        for (std::map<unsigned int, std::string>::iterator it = response.answers.begin(); it != response.answers.end(); it++)
+        {
+            answers += (it->first + "=" + it->second + "-");
+        }
+        answers = answers.substr(0, answers.length() - 1);
+        j["answers"] = answers;
+    }
+    else
+    {
+        j["question"] = "";
+        j["answers"] = "";
+    }
+    
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeSubmitAnswerResponse(SubmitAnswerResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    j["correctAnswerId"] = response.correctAnswerId;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetGameResultsResponse(GetGameResultsResponse response)
+{
+    std::string results = "";
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    if (response.status == 0)
+        j["results"] = "";
+    else
+    {
+        for (std::vector<PlayerResults>::iterator it = response.results.begin(); it != response.results.end(); it++)
+        {
+            results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) + std::to_string(it->averageAnswerTime) + "-");
+        }
+        results = results.substr(0, results.length() - 1);
+        j["results"] = results;
+    }
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+    
+}
+
