@@ -13,4 +13,16 @@ public:
 		_q(q), correctAns(correct), ans2(ans2), ans3(ans3), ans4(ans4)
 	{
 	}
+	std::string getQuestion()
+	{
+		return std::string(_q);
+	}
+	std::string getPossibleAnswers()
+	{
+		return std::string(ans2) + "&" +std::string(ans3) + "&" + std::string(ans4);
+	}
+	std::string getCorrectAnswer()
+	{
+		return std::string(correctAns);
+	}
 };
