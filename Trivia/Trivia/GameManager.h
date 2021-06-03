@@ -11,6 +11,7 @@ private:
 	IDatabase* m_database;
 	std::vector<Game> m_games;
 public:
+	GameManager(IDatabase* database);
 	Game CreateGame(Room room);
 	void deleteGame(Game game);
 	void submitAnswer(Game game,LoggedUser user, std::string answer, int answerTime);

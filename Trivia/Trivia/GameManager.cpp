@@ -1,5 +1,11 @@
 #include "GameManager.h"
 #include <algorithm>
+
+GameManager::GameManager(IDatabase* database)
+{
+	m_database = database;
+}
+
 Game GameManager::CreateGame(Room room)
 {
 	std::list<Question> q = m_database->getQuestions(room.getMetadata().numOfQuestionsInGame);
