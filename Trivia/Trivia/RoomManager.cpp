@@ -120,7 +120,14 @@ Room::~Room()
 */
 void Room::addUser(LoggedUser user)
 {
-	this->m_users.push_back(user);
+	if (this->m_metadata.maxPlayers > this->m_users.size())
+	{
+		this->m_users.push_back(user);
+	}
+	else
+	{
+		throw ExceptionHandler("Error...Max players reached couldn't join into rooms");
+	}
 }
 
 /*
