@@ -1,6 +1,7 @@
 #include "Game.h"
+#include "ExceptionHandler.h"
 
-Game::Game(std::list<Question> questions, std::vector<std::string> users)
+Game::Game(std::list<Question> questions, std::vector<std::string> users,int gameId)
 {
 	for (std::list<Question>::iterator it = questions.begin(); it != questions.end(); it++)
 	{
@@ -12,23 +13,40 @@ Game::Game(std::list<Question> questions, std::vector<std::string> users)
 		LoggedUser u = LoggedUser(*it);
 		m_players.insert({ u,game });
 	}
+	this->gameId = gameId;
 }
 
-void Game::getQuestionForUser(LoggedUser user)
+Question Game::getQuestionForUser(LoggedUser user)
 {
 	for (std::map<LoggedUser, GameData>::iterator it = m_players.begin(); it != m_players.end(); it++)
 	{
 		LoggedUser u = it->first;
 		if (u == user)
 		{
-			for (std::vector<Question>::iterator it1 = m_question.begin(); it1 != m_question.end(); it1++)
-			{
-				if (it1->getQuestion() == it->second.currentQuestion.getQuestion())
-				{
-					it->second.currentQuestion = *(it1 + 1);
-				}
-			}
+			return it->second.currentQuestion;
 		}
+	}
+	throw ExceptionHandler("Error, user not found in game");
+}
+
+void Game::submitAnswer(LoggedUser user, std::string answer)
+{
+	
+	std::map<LoggedUser,GameData>::iterator it = m_players.find(user);
+	if (it != m_players.end())
+	{
+		if (it->second.currentQuestion.getCorrectAnswer() == answer)
+		{
+			it->second.correctAnswerCount++;
+		}
+		else
+		{
+			it->second.wrongAnswerCount++;
+		}
+	}
+	else
+	{
+		throw ExceptionHandler("Error, user not found in game");
 	}
 }
 
@@ -43,4 +61,10 @@ void Game::removePlayer(LoggedUser user)
 			return;
 		}
 	}
+	throw ExceptionHandler("Error, user not found in game");
+}
+
+std::map<LoggedUser, GameData>& Game::getGameResults()
+{
+	return m_players;
 }

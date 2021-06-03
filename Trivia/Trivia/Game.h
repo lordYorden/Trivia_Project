@@ -24,10 +24,17 @@ class Game
 private:
 	std::vector<Question> m_question;
 	std::map<LoggedUser, GameData> m_players;
+	int gameId;
 public:
-	Game(std::list<Question> questions, std::vector<std::string> users);
-	void getQuestionForUser(LoggedUser user);
+	Game(std::list<Question> questions, std::vector<std::string> users, int gameId);
+	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, std::string answer);
 	void removePlayer(LoggedUser user);
+	std::map<LoggedUser, GameData>& getGameResults();
+	int getGameId()
+	{
+		return this->gameId;
+	}
+
 
 };
