@@ -5,6 +5,7 @@
 #include <list>
 #include <map>
 #include "RoomManager.h"
+#include "JsonResponseSerializer.h"
 class GameManager
 {
 private:
@@ -15,7 +16,7 @@ public:
 	Game CreateGame(Room room);
 	void deleteGame(Game game);
 	void submitAnswer(Game game,LoggedUser user, std::string answer, int answerTime);
-	std::map<LoggedUser, GameData>& getGameResults(Game game);
+	std::vector<PlayerResults>& getGameResults(Game game);
 	
 
 };

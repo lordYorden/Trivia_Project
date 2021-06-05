@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include <algorithm>
 
+
 GameManager::GameManager(IDatabase* database)
 {
 	m_database = database;
@@ -34,7 +35,14 @@ void GameManager::submitAnswer(Game game,LoggedUser user, std::string answer,int
 	game.submitAnswer(user, answer);
 }
 
-std::map<LoggedUser, GameData>& GameManager::getGameResults(Game game)
+std::vector<PlayerResults>& GameManager::getGameResults(Game game)
 {
-	return game.getGameResults();
+	std::vector<PlayerResults> vec;
+	for (std::map<LoggedUser, GameData>::iterator it = game.getGameResults().begin(); it != game.getGameResults().end(); it++)
+	{
+		LoggedUser l = it->first;
+		PlayerResults p = { l.getUsername(),it->second.correctAnswerCount,it->second.wrongAnswerCount,it->second.averageAnswerTime };
+		vec.push_back(p);
+	}
+	return vec;
 }
