@@ -16,6 +16,5 @@ public:
 	virtual RequestResult RequestHandler(RequestInfo info) override;
 private:
 	RequestResult leaveRoom(RequestInfo info);
-	RequestResult error(const std::string& message);
 };
 

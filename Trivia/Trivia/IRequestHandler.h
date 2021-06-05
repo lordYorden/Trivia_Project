@@ -1,6 +1,8 @@
 #pragma once
 #include <ctime>
 #include <vector>
+#include <iostream>
+#include "JsonResponseSerializer.h"
 
 class IRequestHandler;
 
@@ -26,6 +28,6 @@ public:
 	virtual bool isRequestRelevent(RequestInfo info) = 0;
 	virtual RequestResult RequestHandler(RequestInfo info) = 0;
 
-private:
-
+protected:
+	RequestResult error(const std::string& message);
 };

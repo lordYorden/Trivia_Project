@@ -84,24 +84,6 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 }
 
 /*
-  *helper method*
-* the function get a message and return a RequestResult object to send
-* to the user
-* input: message - the error message (std::string)
-* output: requestRes - the response to send to the user (RequestResult)
-*/
-RequestResult MenuRequestHandler::error(const std::string& message)
-{
-	ErrorResponse errorRes;
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	errorRes.message = message;
-	buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
-}
-
-/*
 * the function handles the signout process of the user
 * input: info - the signout request of the user (RequestInfo)
 * output: requestRes - the response to send to the user (RequestResult)

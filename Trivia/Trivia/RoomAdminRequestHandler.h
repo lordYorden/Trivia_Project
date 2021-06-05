@@ -13,8 +13,7 @@ public:
 	~RoomAdminRequestHandler();
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
-private:
-	RequestResult error(const std::string& message);
+private
 	RequestResult closeRoom(RequestInfo info);
 	RequestResult startGame(RequestInfo info);
 };

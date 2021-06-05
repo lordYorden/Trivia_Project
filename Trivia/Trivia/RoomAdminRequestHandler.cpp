@@ -74,24 +74,6 @@ RequestResult RoomAdminRequestHandler::RequestHandler(RequestInfo info)
 }
 
 /*
-  *helper method*
-* the function get a message and return a RequestResult object to send
-* to the user
-* input: message - the error message (std::string)
-* output: requestRes - the response to send to the user (RequestResult)
-*/
-RequestResult RoomAdminRequestHandler::error(const std::string& message)
-{
-	ErrorResponse errorRes;
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	errorRes.message = message;
-	buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
-}
-
-/*
 * the function handles the closeRoom requests of the user
 * input: info - the closeRoom request of the user (RequestInfo)
 * output: requestRes - the response to send to the user (RequestResult)

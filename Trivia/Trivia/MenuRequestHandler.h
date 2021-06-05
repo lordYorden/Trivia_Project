@@ -18,7 +18,6 @@ public:
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
 private:
-	RequestResult error(const std::string& message);
 	RequestResult signout(RequestInfo info);
 	RequestResult getRooms(RequestInfo info);
 	RequestResult getPlayersInRoom(RequestInfo info);
