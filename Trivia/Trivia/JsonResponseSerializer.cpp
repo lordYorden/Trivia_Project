@@ -225,7 +225,6 @@ std::vector<unsigned char> JsonResponseSerializer::serializeSubmitAnswerResponse
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = response.status;
-    j["correctAnswer"] = response.correctAnswer;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
 }

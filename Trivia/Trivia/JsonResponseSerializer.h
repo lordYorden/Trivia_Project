@@ -91,7 +91,6 @@ struct GetQuestionResponse
 struct SubmitAnswerResponse
 {
 	unsigned int status;
-	std::string correctAnswer;
 
 }typedef SubmitAnswerResponse;
 struct PlayerResults
