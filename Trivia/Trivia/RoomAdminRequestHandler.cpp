@@ -3,6 +3,7 @@
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
 #include "MenuRequestHandler.h"
+#include "GameRequestHandler.h"
 
 /*
 * The Constructor of Class RoomAdminRequestHandler
@@ -28,7 +29,7 @@ RoomAdminRequestHandler::~RoomAdminRequestHandler()
 /*
 * check if the request is part of the room Admin requests
 * input: info - the request information (RequestInfo)
-* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+* output: isRequestRelevent - if the request is part of the room Admin requests (bool)
 */
 bool RoomAdminRequestHandler::isRequestRelevent(RequestInfo info)
 {
@@ -105,7 +106,8 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 	m_room.setRoomState(true);
 	std::cout << "the room " << roomID << " has started the game" << std::endl;
 	StartGameResponse startRes = { RequestId::MT_RESPONSE_OK };
-	//create Game Handler
+	Game& game = m_handlerFactory.getGameManager().CreateGame(m_room);
+	newHandler = m_handlerFactory.createGameRequestHandler(game, m_user);
 	buffer = JsonResponseSerializer::serializeStartGameResponse(startRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;

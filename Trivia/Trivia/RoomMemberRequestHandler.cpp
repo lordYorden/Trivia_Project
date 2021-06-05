@@ -28,7 +28,7 @@ RoomMemberRequestHandler::~RoomMemberRequestHandler()
 /*
 * check if the request is part of the room Member requests
 * input: info - the request information (RequestInfo)
-* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+* output: isRequestRelevent - if the request is part of the room Member requests (bool)
 */
 bool RoomMemberRequestHandler::isRequestRelevent(RequestInfo info)
 {
