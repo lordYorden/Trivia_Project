@@ -84,13 +84,14 @@ struct GetQuestionResponse
 {
 	unsigned int status;
 	std::string question;
-	std::map<unsigned int, std::string> answers;
+	std::string correctAnswer;
+	std::string otherAnswers;
 	
 }typedef GetQuestionResponse;
 struct SubmitAnswerResponse
 {
 	unsigned int status;
-	unsigned int correctAnswerId;
+	std::string correctAnswer;
 
 }typedef SubmitAnswerResponse;
 struct PlayerResults

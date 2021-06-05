@@ -211,21 +211,9 @@ std::vector<unsigned char> JsonResponseSerializer::serializeGetQuestionResponse(
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = response.status;
-    if (response.status == 1)
-    {
-        j["question"] = response.question;
-        for (std::map<unsigned int, std::string>::iterator it = response.answers.begin(); it != response.answers.end(); it++)
-        {
-            answers += (it->first + "=" + it->second + "-");
-        }
-        answers = answers.substr(0, answers.length() - 1);
-        j["answers"] = answers;
-    }
-    else
-    {
-        j["question"] = "";
-        j["answers"] = "";
-    }
+    j["question"] = response.question;
+    j["correctAnswer"] = response.correctAnswer;
+    j["otherAnswers"] = response.otherAnswers;
     
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
@@ -237,7 +225,7 @@ std::vector<unsigned char> JsonResponseSerializer::serializeSubmitAnswerResponse
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = response.status;
-    j["correctAnswerId"] = response.correctAnswerId;
+    j["correctAnswer"] = response.correctAnswer;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
 }

@@ -38,7 +38,8 @@ typedef struct CreateRoomRequest
 
 }CreateRoomRequest;
 typedef struct SubmitAnswerRequest {
-	int answerID;
+	std::string answer;
+	int answerTime;
 }SubmitAnswerRequest;
 
 class JsonRequestPacketDeserializer

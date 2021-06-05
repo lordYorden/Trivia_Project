@@ -112,8 +112,9 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerReque
     std::string jsonStr = BinToStr(buffer);
     //after convertion
     auto j = nlohmann::json::parse(jsonStr);
-    int answerID = j.at("answerID");
-    SubmitAnswerRequest info = { answerID };
+    std::string answer = j.at("answer");
+    int answerTime = j.at("answerTime");
+    SubmitAnswerRequest info = { answer, answerTime };
     return info;
 }
 
