@@ -15,6 +15,9 @@ public:
 	virtual int getNumOfTotalAnswers(std::string name) = 0;
 	virtual int getNumOfPlayerGames(std::string name) = 0;
 	virtual std::vector<std::string> getTopFiveScores() = 0;
+	virtual void insertIntoStatistics(int gameId, std::string username, std::string answer, int answerTime) = 0;
+	virtual int isAnswerCorrect(std::string answer) = 0;
+	virtual void insertGame(int gameId) = 0;
 	
 
 };

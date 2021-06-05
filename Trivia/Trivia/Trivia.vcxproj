@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="ConvertHelper.h" />
     <ClInclude Include="Helper.h" />
@@ -167,6 +169,8 @@
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="ConvertHelper.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
