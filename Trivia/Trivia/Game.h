@@ -12,13 +12,7 @@ struct GameData
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
 };
-bool operator<(const LoggedUser& n1, const LoggedUser& n2)
-{
-	
-	LoggedUser p1 = n1;
-	LoggedUser p2 = n2;
-	return p1.getUsername().length() < p2.getUsername().length();
-}
+
 class Game
 {
 private:

@@ -13,7 +13,7 @@ public:
 	~RoomAdminRequestHandler();
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
-private
+private:
 	RequestResult closeRoom(RequestInfo info);
 	RequestResult startGame(RequestInfo info);
 };
