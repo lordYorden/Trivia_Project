@@ -35,6 +35,21 @@ void GameManager::submitAnswer(Game game,LoggedUser user, std::string answer,int
 	game.submitAnswer(user, answer);
 }
 
+/*
+* return the game given its ID
+* input: gameID - the game identifier (int)
+* output: game - the game with th given id (Game&)
+*/
+Game& GameManager::getGameByID(int gameID, LoggedUser& user)
+{
+	std::vector<Game>::iterator it = std::find(m_games.begin(), m_games.end(), gameID);
+	if (it != m_games.end())
+	{
+		return *it;
+	}
+	throw ExceptionHandler("Error....Game dose not exist");
+}
+
 std::vector<PlayerResults>& GameManager::getGameResults(Game game)
 {
 	std::vector<PlayerResults> vec;

@@ -50,7 +50,7 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 	if (m_roomManager.getRoomState(metadata.id))
 	{
 		status = RequestId::MT_START_GAME_INDICATOR;
-		Game& game = m_handlerFactory.getGameManager().CreateGame(m_room);
+		Game& game = m_handlerFactory.getGameManager().getGameByID(metadata.id, m_user);
 		newHandler = m_handlerFactory.createGameRequestHandler(game, m_user);
 	}
 	GetRoomStateResponse stateRes = { status, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
