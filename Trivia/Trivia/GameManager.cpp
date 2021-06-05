@@ -7,7 +7,7 @@ GameManager::GameManager(IDatabase* database)
 	m_database = database;
 }
 
-Game GameManager::CreateGame(Room room)
+Game& GameManager::CreateGame(Room room)
 {
 	std::list<Question> q = m_database->getQuestions(room.getMetadata().numOfQuestionsInGame);
 	std::vector<std::string> players = room.getAllUsers();
