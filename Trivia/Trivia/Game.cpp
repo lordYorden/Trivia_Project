@@ -23,7 +23,8 @@ Question Game::getQuestionForUser(LoggedUser user)
 		LoggedUser u = it->first;
 		if (u == user)
 		{
-			return it->second.currentQuestion;
+			Question q = it->second.currentQuestion;
+			it->second.currentQuestion = *(std::find(m_question.begin(), m_question.end(),q)); //progressing questions;
 		}
 	}
 	throw ExceptionHandler("Error, user not found in game");
