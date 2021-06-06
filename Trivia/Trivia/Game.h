@@ -21,9 +21,11 @@ private:
 	int gameId;
 public:
 	Game(std::list<Question> questions, std::vector<std::string> users, int gameId);
+	Game(int gameId);
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, std::string answer);
 	void removePlayer(LoggedUser user);
+	bool operator==(Game const& other) const;
 	std::map<LoggedUser, GameData>& getGameResults();
 	int getGameId()
 	{

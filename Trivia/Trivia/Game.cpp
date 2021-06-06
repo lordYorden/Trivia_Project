@@ -16,6 +16,11 @@ Game::Game(std::list<Question> questions, std::vector<std::string> users,int gam
 	this->gameId = gameId;
 }
 
+Game::Game(int gameId)
+{
+	this->gameId = gameId;
+}
+
 Question Game::getQuestionForUser(LoggedUser user)
 {
 	for (std::map<LoggedUser, GameData>::iterator it = m_players.begin(); it != m_players.end(); it++)
@@ -24,7 +29,8 @@ Question Game::getQuestionForUser(LoggedUser user)
 		if (u == user)
 		{
 			Question q = it->second.currentQuestion;
-			it->second.currentQuestion = *(std::find(m_question.begin(), m_question.end(),q)); //progressing questions;
+			it->second.currentQuestion = *(std::find(m_question.begin(), m_question.end(),q)+1); //progressing questions;
+			return q;
 		}
 	}
 	throw ExceptionHandler("Error, user not found in game");
@@ -53,16 +59,20 @@ void Game::submitAnswer(LoggedUser user, std::string answer)
 
 void Game::removePlayer(LoggedUser user)
 {
-	for (std::map<LoggedUser, GameData>::iterator it = m_players.begin(); it != m_players.end(); it++)
+	std::map<LoggedUser, GameData>::iterator it = m_players.find(user);
+	if (it != m_players.end())
 	{
-		LoggedUser u = it->first;
-		if (u == user)
-		{
-			m_players.erase(it);
-			return;
-		}
+		m_players.erase(it);
 	}
-	throw ExceptionHandler("Error, user not found in game");
+	else
+	{
+		throw ExceptionHandler("Error, user not found in game");
+	}
+}
+
+bool Game::operator==(Game const& other) const
+{
+	return this->gameId == other.gameId;
 }
 
 std::map<LoggedUser, GameData>& Game::getGameResults()

@@ -138,7 +138,7 @@ RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	m_game.removePlayer(m_user);
-	std::cout << m_user.getUsername() << "has left game " << m_game.getGameId() << std::endl;
+	std::cout << m_user.getUsername() << " has left game " << m_game.getGameId() << std::endl;
 	LeaveGameResponse leaveGameRes = { MT_RESPONSE_OK};
 	buffer = JsonResponseSerializer::serializeLeaveGameResponse(leaveGameRes);
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);

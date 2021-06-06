@@ -25,4 +25,8 @@ public:
 	{
 		return std::string(correctAns);
 	}
+	bool operator==(Question const& other) const
+	{
+		return this->_q == other._q;
+	}
 };

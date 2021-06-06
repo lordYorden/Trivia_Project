@@ -34,7 +34,7 @@ MenuRequestHandler::~MenuRequestHandler()
 */
 bool MenuRequestHandler::isRequestRelevent(RequestInfo info)
 {
-	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
+	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
 }
 
 /*
@@ -58,7 +58,7 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 			return signout(info);
 		case RequestId::MT_GET_ROOMS_REQUEST:
 			return getRooms(info);
-		case RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST:
+		case RequestId::MT_GET_PLAYERS_IN_ROOM:
 			return getPlayersInRoom(info);
 		case RequestId::MT_GET_STATISTICS:
 			return getPersonalStats(info);

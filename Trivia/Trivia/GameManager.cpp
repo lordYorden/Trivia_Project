@@ -42,7 +42,7 @@ void GameManager::submitAnswer(Game game,LoggedUser user, std::string answer,int
 */
 Game& GameManager::getGameByID(int gameID, LoggedUser& user)
 {
-	std::vector<Game>::iterator it = std::find(m_games.begin(), m_games.end(), gameID);
+	std::vector<Game>::iterator it = std::find(m_games.begin(), m_games.end(), Game(gameID));
 	if (it != m_games.end())
 	{
 		return *it;
