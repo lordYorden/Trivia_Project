@@ -103,8 +103,9 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	int roomID = m_room.getMetadata().id;
-	m_roomManager.getRoomById(roomID).setRoomState(true);
-	Game& game = m_handlerFactory.getGameManager().CreateGame(m_room);
+	Room& room = m_roomManager.getRoomById(roomID);
+	room.setRoomState(true);
+	Game& game = m_handlerFactory.getGameManager().CreateGame(room);
 	newHandler = m_handlerFactory.createGameRequestHandler(game, m_user);
 	std::cout << "the room " << roomID << " has started the game" << std::endl;
 	StartGameResponse startRes = { RequestId::MT_RESPONSE_OK };
