@@ -9,7 +9,7 @@ private:
 	std::string ans3;
 	std::string ans4;
 public:
-	Question(std ::string q, std::string correct, std::string ans2, std::string, std::string ans4) :
+	Question(std ::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4) :
 		_q(q), correctAns(correct), ans2(ans2), ans3(ans3), ans4(ans4)
 	{
 	}
