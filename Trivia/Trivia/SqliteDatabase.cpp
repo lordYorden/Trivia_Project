@@ -154,7 +154,7 @@ int SqliteDatabase::isExistsCallback(void* data, int argc, char** argv, char** a
 
 int SqliteDatabase::fillQuestionsCallback(void* data, int argc, char** argv, char** azColName)
 {
-	Question q = Question(azColName[0], azColName[1], azColName[2], azColName[3], azColName[4]);
+	Question q = Question(argv[0], argv[1], argv[2], argv[3], argv[4]);
 	(*(std::list<Question>*)data).push_back(q);
 	return 0;
 }
@@ -163,7 +163,7 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 {
 	try
 	{
-		*(float*)data = std::stof(azColName[0]);
+		*(float*)data = std::stof(argv[0]);
 	}
 	catch (std::exception& e)
 	{
@@ -174,14 +174,14 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 
 int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*(int*)data = atoi(azColName[0]);
+	*(int*)data = atoi(argv[0]);
 	return 0;
 }
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	std::strcat(azColName[1], "=");
-	std::strcat(azColName[1], azColName[4]);
+	std::strcat(argv[1], "=");
+	std::strcat(argv[1], argv[4]);
 	(*(std::vector<std::string>*)data).push_back(azColName[1]);
 	return 0;
 
