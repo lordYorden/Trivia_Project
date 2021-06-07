@@ -113,8 +113,16 @@ std::list<Question> SqliteDatabase::getQuestions(int num)
 float SqliteDatabase::getAverageAnswerTime(std::string name)
 {
 	float time = 0;
-	std::string statement = "SELECT AVG(ANSWERTIME) FROM STATISTIC\ WHERE UNAME = \"" + name + "\";";
-	ExecuteSqlCallback(statement, getFloatCallback, &time);
+	std::string statement = "SELECT AVG(ANSWERTIME) FROM STATISTIC WHERE UNAME = \"" + name + "\";";
+	try
+	{
+		ExecuteSqlCallback(statement, getFloatCallback, &time);
+	}
+	catch (std::exception& e)
+	{
+		throw ExceptionHandler("Error...User wasn't found");
+	}
+	
 	return time;
 }
 
@@ -130,7 +138,7 @@ int SqliteDatabase::getNumOfCorrectAnswers(std::string name)
 int SqliteDatabase::getNumOfTotalAnswers(std::string name)
 {
 	int num = 0;
-	std::string statement = "SELECT COUNT(UNAME) FROM STATISTIC;";
+	std::string statement = "SELECT COUNT(UNAME) FROM STATISTIC WHERE UNAME = \""+name+"\";";
 	ExecuteSqlCallback(statement, getIntCallback, &num);
 	return num;
 }
@@ -172,7 +180,8 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 {
 	try
 	{
-		*(float*)data = std::stof(argv[0]);
+		if(argv[0] != nullptr)
+			*(float*)data = std::stof(argv[0]);
 	}
 	catch (std::exception& e)
 	{
@@ -183,14 +192,16 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 
 int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*(int*)data = atoi(argv[0]);
+	if (argv[0] != nullptr)	
+		*(int*)data = atoi(argv[0]);
 	return 0;
 }
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	
-	(*(std::vector<std::string>*)data).push_back(std::string(argv[1])+"="+std::string(argv[4]));
+	std::string str1 = std::string(argv[0]);
+	std::string str2 = std::string(argv[1]);
+	(*(std::vector<std::string>*)data).push_back(str1+"="+str2);
 	return 0;
 
 }
