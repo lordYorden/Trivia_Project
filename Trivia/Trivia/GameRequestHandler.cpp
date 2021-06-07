@@ -125,8 +125,8 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
-	std::cout << m_game.getGameId() << " has ended...Now Showing scores" << std::endl;
 	GetGameResultsResponse gameRes = { MT_RESPONSE_OK,  m_gameManager.getGameResults(m_game)};
+	std::cout << m_game.getGameId() << " has ended...Now Showing scores" << std::endl;
 	buffer = JsonResponseSerializer::serializeGetGameResultsResponse(gameRes);
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	RequestResult requestRes = { buffer, newHandler };

@@ -167,7 +167,7 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 	std::vector<std::string> highScores = m_statisticsManager.getHighScore();
 	GetScoresResponse highScoreRes = { RequestId::MT_RESPONSE_OK, highScores};
 	buffer = JsonResponseSerializer::serializeHighScoresResponse(highScoreRes);
-	std::cout << "statistics for " << m_user.getUsername() << std::endl;
+	std::cout << "high score for " << m_user.getUsername() << std::endl;
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }

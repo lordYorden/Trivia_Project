@@ -59,7 +59,7 @@ void SqliteDatabase::insertGame(int gameId)
 int SqliteDatabase::getPlayerScore(int gameId, std::string uname)
 {
 	int score = 0;
-	std::string statement = "SELECT SUM(SCORE) WHERE UNAME = \"" + uname + "\" AND GAMEID = " + std::to_string(gameId) + ";";
+	std::string statement = "SELECT SUM(SCORE) FROM STATISTIC WHERE UNAME = \"" + uname + "\" AND GAMEID = " + std::to_string(gameId) + ";";
 	ExecuteSqlCallback(statement, getIntCallback, &score);
 	return score;
 	

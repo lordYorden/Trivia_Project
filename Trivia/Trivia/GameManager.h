@@ -17,7 +17,7 @@ public:
 	void deleteGame(Game game);
 	void submitAnswer(Game game,LoggedUser user, std::string answer, int answerTime);
 	Game& getGameByID(int gameID, LoggedUser& user);
-	std::vector<PlayerResults>& getGameResults(Game game);
+	std::vector<PlayerResults> getGameResults(Game game);
 	
 
 };

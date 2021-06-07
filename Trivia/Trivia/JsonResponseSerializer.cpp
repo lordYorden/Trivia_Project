@@ -236,17 +236,12 @@ std::vector<unsigned char> JsonResponseSerializer::serializeGetGameResultsRespon
     buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
     nlohmann::json j;
     j["status"] = response.status;
-    if (response.status == 0)
-        j["results"] = "";
-    else
+    for (std::vector<PlayerResults>::iterator it = response.results.begin(); it != response.results.end(); it++)
     {
-        for (std::vector<PlayerResults>::iterator it = response.results.begin(); it != response.results.end(); it++)
-        {
-            results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) +"&"+ std::to_string(it->averageAnswerTime)+"&"+std::to_string(it->score) + "-");
-        }
-        results = results.substr(0, results.length() - 1);
-        j["results"] = results;
+        results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) +"&"+ std::to_string(it->averageAnswerTime)+"&"+std::to_string(it->score) + "-");
     }
+    results = results.substr(0, results.length() - 1);
+    j["results"] = results;
     ConvertHelper::fillingVector(buffer, j);
     return buffer;
     

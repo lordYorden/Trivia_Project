@@ -50,7 +50,7 @@ Game& GameManager::getGameByID(int gameID, LoggedUser& user)
 	throw ExceptionHandler("Error....Game dose not exist");
 }
 
-std::vector<PlayerResults>& GameManager::getGameResults(Game game)
+std::vector<PlayerResults> GameManager::getGameResults(Game game)
 {
 	std::vector<PlayerResults> vec;
 	for (std::map<LoggedUser, GameData>::iterator it = game.getGameResults().begin(); it != game.getGameResults().end(); it++)
