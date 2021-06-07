@@ -27,7 +27,7 @@ public:
 	RoomManager& getRoomManager();
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(int RoomID, LoggedUser& user);
 	RoomMemberRequestHandler* createRoomMemberRequestHandler(int RoomID, LoggedUser& user);
-	GameRequestHandler* createGameRequestHandler(Game& game, LoggedUser user);
+	GameRequestHandler* createGameRequestHandler(Game& game, LoggedUser& user);
 	GameManager& getGameManager();
 	
 private:

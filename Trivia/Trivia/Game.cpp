@@ -29,7 +29,19 @@ Question Game::getQuestionForUser(LoggedUser user)
 		if (u == user)
 		{
 			Question q = it->second.currentQuestion;
-			it->second.currentQuestion = *(std::find(m_question.begin(), m_question.end(),q)+1); //progressing questions;
+			if (q.getQuestion() != "")
+			{
+				//progressing questions;
+				auto qIt = std::find(m_question.begin(), m_question.end(), q);
+				if (qIt + 1 != m_question.end())
+				{
+					it->second.currentQuestion = *(qIt + 1);
+				}
+				else
+				{
+					it->second.currentQuestion = Question("", "", "", "", "");
+				}
+			}
 			return q;
 		}
 	}

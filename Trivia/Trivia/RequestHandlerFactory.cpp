@@ -99,7 +99,7 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 	return new RoomMemberRequestHandler(*this, user, m_roomManager.getRoomById(RoomID));
 }
 
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(Game& game, LoggedUser user)
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(Game& game, LoggedUser& user)
 {
 	return new GameRequestHandler(*this, user, game);
 }

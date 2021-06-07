@@ -13,7 +13,7 @@
 * output: none
 */
 GameRequestHandler::GameRequestHandler(RequestHandlerFactory& factory, LoggedUser& user, Game& game) :
-	IRequestHandler(), m_handlerFactory(factory), m_gameManager(m_handlerFactory.getGameManager()), m_user(user), m_game(game)
+	IRequestHandler(), m_handlerFactory(factory), m_gameManager(factory.getGameManager()), m_user(user), m_game(game)
 {
 }
 
@@ -86,8 +86,13 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	Question question = m_game.getQuestionForUser(m_user);
+	int status = MT_RESPONSE_OK;
+	if (question.getQuestion() == "")
+	{
+		status = MT_ERROR; //out of question
+	}
 	std::cout << m_user.getUsername() << " has asked for a question!" << std::endl;
-	GetQuestionResponse qRes = { MT_RESPONSE_OK, question.getQuestion(),  question.getCorrectAnswer(), question.getPossibleAnswers() };
+	GetQuestionResponse qRes = { status, question.getQuestion(),  question.getCorrectAnswer(), question.getPossibleAnswers() };
 	buffer = JsonResponseSerializer::serializeGetQuestionResponse(qRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
