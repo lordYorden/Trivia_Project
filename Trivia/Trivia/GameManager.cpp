@@ -56,7 +56,7 @@ std::vector<PlayerResults>& GameManager::getGameResults(Game game)
 	for (std::map<LoggedUser, GameData>::iterator it = game.getGameResults().begin(); it != game.getGameResults().end(); it++)
 	{
 		LoggedUser l = it->first;
-		PlayerResults p = { l.getUsername(),it->second.correctAnswerCount,it->second.wrongAnswerCount,it->second.averageAnswerTime };
+		PlayerResults p = { l.getUsername(),it->second.correctAnswerCount,it->second.wrongAnswerCount,it->second.averageAnswerTime,m_database->getPlayerScore(game.getGameId(),l.getUsername())};
 		vec.push_back(p);
 	}
 	return vec;

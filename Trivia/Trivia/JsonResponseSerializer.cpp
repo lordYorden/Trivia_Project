@@ -242,7 +242,7 @@ std::vector<unsigned char> JsonResponseSerializer::serializeGetGameResultsRespon
     {
         for (std::vector<PlayerResults>::iterator it = response.results.begin(); it != response.results.end(); it++)
         {
-            results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) + std::to_string(it->averageAnswerTime) + "-");
+            results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) +"&"+ std::to_string(it->averageAnswerTime)+"&"+std::to_string(it->score) + "-");
         }
         results = results.substr(0, results.length() - 1);
         j["results"] = results;

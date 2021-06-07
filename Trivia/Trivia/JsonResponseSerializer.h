@@ -99,6 +99,7 @@ struct PlayerResults
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averageAnswerTime;
+	int score;
 
 }typedef PlayerResults;
 struct GetGameResultsResponse

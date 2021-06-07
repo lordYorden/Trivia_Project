@@ -21,7 +21,7 @@ void SqliteDatabase::open()
 	ExecuteSQL(statement1);
 	std::string statement4 = "CREATE TABLE IF NOT EXISTS GAME(GAMEID INTEGER PRIMARY KEY);";
 	ExecuteSQL(statement4);
-	std::string statement3 = "CREATE TABLE IF NOT EXISTS STATISTIC(GAMEID INTEGER PRIMARY KEY,UNAME TEXT NOT NULL,ISCORRECT INTEGER,ANSWERTIME INTEGER NOT NULL,SCORE INTEGER NOT NULL, FOREIGN KEY(UNAME) REFERENCES USERS(UNAME), FOREIGN KEY(GAMEID) REFERENCES GAMES(GAMEID));";
+	std::string statement3 = "CREATE TABLE IF NOT EXISTS STATISTIC(GAMEID INTEGER NOT NULL,UNAME TEXT NOT NULL,ISCORRECT INTEGER,ANSWERTIME INTEGER NOT NULL,SCORE INTEGER NOT NULL);";
 	ExecuteSQL(statement3);
 	std::cout << "Opened both tables" << std::endl;
 }
@@ -29,7 +29,7 @@ void SqliteDatabase::open()
 std::vector<std::string> SqliteDatabase::getTopFiveScores()
 {
 	std::vector<std::string> scores;
-	std::string statement = "SELECT * FROM STATISTIC ORDER BY SCORE DESC LIMIT 5;";
+	std::string statement = "SELECT UNAME,SUM(SCORE) SCORESUM FROM STATISTIC GROUP BY UNAME ORDER BY SCORESUM DESC LIMIT 5;";
 	ExecuteSqlCallback(statement, fillScoreCallback, &scores);
 	return scores;
 }
@@ -54,6 +54,15 @@ void SqliteDatabase::insertGame(int gameId)
 	std::string statement = "INSERT INTO GAME(GAMEID) VALUES(" + std::to_string(gameId) + ");";
 	ExecuteSQL(statement);
 
+}
+
+int SqliteDatabase::getPlayerScore(int gameId, std::string uname)
+{
+	int score = 0;
+	std::string statement = "SELECT SUM(SCORE) WHERE UNAME = \"" + uname + "\" AND GAMEID = " + std::to_string(gameId) + ";";
+	ExecuteSqlCallback(statement, getIntCallback, &score);
+	return score;
+	
 }
 
 

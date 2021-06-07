@@ -22,6 +22,7 @@ public:
 	void insertIntoStatistics(int gameId, std::string username, std::string answer, int answerTime)override;
 	int isAnswerCorrect(std::string answer)override;
 	 void insertGame(int gameId)override;
+	 int getPlayerScore(int gameId, std::string uname)override;
 private:
 
 	static int isExistsCallback(void* data, int argc, char** argv, char** azColName);
