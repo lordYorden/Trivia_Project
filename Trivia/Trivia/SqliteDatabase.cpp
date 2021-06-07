@@ -155,7 +155,7 @@ int SqliteDatabase::isExistsCallback(void* data, int argc, char** argv, char** a
 int SqliteDatabase::fillQuestionsCallback(void* data, int argc, char** argv, char** azColName)
 {
 	Question q = Question(argv[0], argv[1], argv[2], argv[3], argv[4]);
-	(*(std::list<Question>*)data).push_back(q);
+	((std::list<Question>*)data)->push_back(q);
 	return 0;
 }
 
