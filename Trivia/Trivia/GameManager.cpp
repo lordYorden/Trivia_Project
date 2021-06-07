@@ -11,10 +11,10 @@ Game& GameManager::CreateGame(Room room)
 {
 	std::list<Question> q = m_database->getQuestions(room.getMetadata().numOfQuestionsInGame);
 	std::vector<std::string> players = room.getAllUsers();
-	Game g = Game(q, players, room.getMetadata().id);
-	m_games.push_back(g);
-	m_database->insertGame(g.getGameId());
-	return g;
+	Game* g = new Game(q, players, room.getMetadata().id);
+	m_games.push_back(*g);
+	m_database->insertGame(g->getGameId());
+	return *g;
 }
 
 void GameManager::deleteGame(Game game)
