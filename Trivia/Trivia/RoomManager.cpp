@@ -71,7 +71,11 @@ std::vector<RoomData> RoomManager::getRooms()
 	std::map<int, Room>::iterator it = this->m_rooms.begin();
 	for (; it != this->m_rooms.end(); it++)
 	{
-		rooms.push_back(it->second.getMetadata());
+		RoomData metadata = it->second.getMetadata();
+		if (!metadata.isActive)
+		{
+			rooms.push_back(metadata);
+		}
 	}
 	return rooms;
 }
