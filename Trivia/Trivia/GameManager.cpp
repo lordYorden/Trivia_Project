@@ -35,6 +35,13 @@ void GameManager::submitAnswer(Game game,LoggedUser user, std::string answer,int
 	game.submitAnswer(user, answer);
 }
 
+void GameManager::leaveGame(LoggedUser user, Game game)
+{
+	std::vector<Game>::iterator it = std::find(m_games.begin(), m_games.end(), game);
+	it->removePlayer(user);
+
+}
+
 /*
 * return the game given its ID
 * input: gameID - the game identifier (int)
