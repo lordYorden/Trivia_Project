@@ -42,6 +42,14 @@ typedef struct SubmitAnswerRequest {
 	int answerTime;
 }SubmitAnswerRequest;
 
+typedef struct SubmitQuestionRequest{
+	std::string question;
+	std::string correctAns;
+	std::string secAns;
+	std::string thirdAns;
+	std::string fourthAns;
+}SubmitQuestionRequest;
+
 class JsonRequestPacketDeserializer
 {
 public:
@@ -51,6 +59,7 @@ public:
 	static JoinRoomRequest deserializerJoinRoomRequest(std::vector<unsigned char>& buffer);
 	static CreateRoomRequest deserializerCreateRoomRequest(std::vector<unsigned char>& buffer);
 	static SubmitAnswerRequest deserializerSubmitAnswerRequest(std::vector<unsigned char>& buffer);
+	static SubmitQuestionRequest deserializerSubmitQuestionRequest(std::vector<unsigned char>& buffer);
 
 private:
 	static std::string BinToStr(std::vector<unsigned char>& buffer);
