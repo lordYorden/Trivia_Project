@@ -119,6 +119,27 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerReque
 }
 
 /*
+* static function
+* the function gets a json in the form of a binery message and return
+* the submit question details
+* input: buffer - the json binery message (std::vector<unsigend char>&)
+* output: info - submit question details (struct SubmitQuestionRequest)
+*/
+SubmitQuestionRequest JsonRequestPacketDeserializer::deserializerSubmitQuestionRequest(std::vector<unsigned char>& buffer)
+{
+    std::string jsonStr = BinToStr(buffer);
+    //after convertion
+    auto j = nlohmann::json::parse(jsonStr);
+    std::string question= j.at("Question");
+    std::string correctAns = j.at("CorrectAns");
+    std::string secAns = j.at("SecAns");
+    std::string thirdAns = j.at("ThirdAns");
+    std::string fourthAns = j.at("FourthAns");
+    SubmitQuestionRequest info = { question, correctAns, secAns, thirdAns, fourthAns};
+    return info;
+}
+
+/*
 * helper method 
 * get a binery message a and returns it as an std::string
 * input: buffer - binery message (std::vector<unsigend char>&)

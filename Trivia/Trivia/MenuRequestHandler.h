@@ -25,6 +25,7 @@ private:
 	RequestResult getHighScore(RequestInfo info);
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
+	RequestResult addQuestion(RequestInfo info);
 	int generateRoomID(std::string roomName);
 	RequestHandlerFactory& m_handlerFactory;
 	StatisticsManager& m_statisticsManager;
