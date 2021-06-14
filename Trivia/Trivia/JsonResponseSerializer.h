@@ -108,6 +108,10 @@ struct GetGameResultsResponse
 	std::vector<PlayerResults> results;
 
 }typedef GetGameResultsResponse;
+struct GetSubmitAnswerResponse
+{
+	unsigned int status;
+}typedef GetSubmitAnswerResponse;
 
 
 class JsonResponseSerializer
@@ -131,5 +135,6 @@ public:
 	static std::vector<unsigned char> serializeGetQuestionResponse(GetQuestionResponse response);
 	static std::vector<unsigned char> serializeSubmitAnswerResponse(SubmitAnswerResponse response);
 	static std::vector<unsigned char> serializeGetGameResultsResponse(GetGameResultsResponse response);
+	static std::vector<unsigned char> serializeGetSubmitAnswerResponse(GetSubmitAnswerResponse response);
 	
 };

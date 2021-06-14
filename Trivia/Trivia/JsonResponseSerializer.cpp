@@ -247,3 +247,13 @@ std::vector<unsigned char> JsonResponseSerializer::serializeGetGameResultsRespon
     
 }
 
+std::vector<unsigned char> JsonResponseSerializer::serializeGetSubmitAnswerResponse(GetSubmitAnswerResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+

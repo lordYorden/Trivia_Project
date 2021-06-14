@@ -65,6 +65,12 @@ int SqliteDatabase::getPlayerScore(int gameId, std::string uname)
 	
 }
 
+void SqliteDatabase::insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4)
+{
+	std::string statement = "INSERT INTO QUESTIONS (QUESTION,CorrectAns,ANS2,ANS3,ANS4) VALUES(\"" + q + "\",\"" + correct + "\",\"" + ans2 + "\",\"" + ans3 + "\",\"" + ans4 + "\");";
+	ExecuteSQL(statement);
+}
+
 
 void SqliteDatabase::ExecuteSQL(std::string statement)
 {
@@ -105,7 +111,7 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> q;
-	std::string statement = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(num) + ";";
+	std::string statement = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(num) + ";";
 	ExecuteSqlCallback(statement, fillQuestionsCallback, &q);
 	return q;
 }
