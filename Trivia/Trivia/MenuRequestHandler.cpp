@@ -226,11 +226,16 @@ RequestResult MenuRequestHandler::addQuestion(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	SubmitQuestionRequest submitQuestionReq = JsonRequestPacketDeserializer::deserializerSubmitQuestionRequest(info.buffer);
-	// submit q
-	std::cout << m_user.getUsername() << " Has submited a question!" << std::endl;
-	/*buffer = JsonResponseSerializer::serializeCreateRoomResponse(createRoomRes);*/ //to do
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
+	m_statisticsManager.insertQuestion(submitQuestionReq.question, submitQuestionReq.correctAns, submitQuestionReq.secAns, submitQuestionReq.thirdAns, submitQuestionReq.fourthAns);
+	
+		std::cout << m_user.getUsername() << " Has submited a question!" << std::endl;
+		GetSubmitAnswerResponse res = { 1 };
+		buffer = JsonResponseSerializer::serializeGetSubmitAnswerResponse(res);
+		RequestResult requestRes = { buffer, newHandler };
+		return requestRes;
+	
+	
+	
 }
 
 /*

@@ -25,8 +25,15 @@ std::vector<std::string> StatisticsManager::getUserStatistics(std::string userna
     return stats;
 }
 
-void StatisticsManager::insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4)
+bool StatisticsManager::insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4)
 {
-    m_database->insertQuestion(q, correct, ans2, ans3, ans4);
+    if (!m_database->doesQuestionExist(q))
+    {
+        m_database->insertQuestion(q, correct, ans2, ans3, ans4);
+        return true;
+    }
+    return false;
+        
+        
 }
 

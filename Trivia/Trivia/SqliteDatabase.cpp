@@ -71,6 +71,14 @@ void SqliteDatabase::insertQuestion(std::string q, std::string correct, std::str
 	ExecuteSQL(statement);
 }
 
+bool SqliteDatabase::doesQuestionExist(std::string q)
+{
+	bool flag = false;
+	std::string statement = "SELECT * FROM QUESTIONS WHERE QUESTION = \"" + q + "\";";
+	ExecuteSqlCallback(statement, isExistsCallback, &flag);
+	return flag;
+}
+
 
 void SqliteDatabase::ExecuteSQL(std::string statement)
 {
