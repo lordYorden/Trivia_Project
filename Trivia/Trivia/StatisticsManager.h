@@ -12,4 +12,5 @@ public:
 	~StatisticsManager();
 	std::vector<std::string> getHighScore();
 	std::vector<std::string> getUserStatistics(std::string username);
+	bool insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4);
 };

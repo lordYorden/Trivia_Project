@@ -19,9 +19,9 @@ void SqliteDatabase::open()
 	ExecuteSQL(statement);
 	std::string statement1 = "CREATE TABLE IF NOT EXISTS QUESTIONS(QID INTEGER PRIMARY KEY AUTOINCREMENT,QUESTION TEXT NOT NULL,CorrectAns TEXT NOT NULL,ANS2 TEXT NOT NULL, ANS3 TEXT NOT NULL, ANS4 TEXT NOT NULL);";
 	ExecuteSQL(statement1);
-	std::string statement4 = "CREATE TABLE IF NOT EXISTS GAMES(GAMEID INTEGER PRIMARY KEY,START TEXT NOT NULL,END TEXT NOT NULL);";
+	std::string statement4 = "CREATE TABLE IF NOT EXISTS GAME(GAMEID INTEGER PRIMARY KEY);";
 	ExecuteSQL(statement4);
-	std::string statement3 = "CREATE TABLE IF NOT EXISTS STATISTIC(GAMEID INTEGER PRIMARY KEY,UNAME TEXT NOT NULL,ISCORRECT INTEGER,ANSWERTIME INTEGER NOT NULL,SCORE INTEGER NOT NULL, FOREIGN KEY(UNAME) REFERENCES USERS(UNAME), FOREIGN KEY(GAMEID) REFERENCES GAMES(GAMEID));";
+	std::string statement3 = "CREATE TABLE IF NOT EXISTS STATISTIC(GAMEID INTEGER NOT NULL,UNAME TEXT NOT NULL,ISCORRECT INTEGER,ANSWERTIME INTEGER NOT NULL,SCORE INTEGER NOT NULL);";
 	ExecuteSQL(statement3);
 	std::cout << "Opened both tables" << std::endl;
 }
@@ -29,9 +29,54 @@ void SqliteDatabase::open()
 std::vector<std::string> SqliteDatabase::getTopFiveScores()
 {
 	std::vector<std::string> scores;
-	std::string statement = "SELECT * FROM STATISTIC ORDER BY SCORE DESC LIMIT 5;";
+	std::string statement = "SELECT UNAME,SUM(SCORE) SCORESUM FROM STATISTIC GROUP BY UNAME ORDER BY SCORESUM DESC LIMIT 5;";
 	ExecuteSqlCallback(statement, fillScoreCallback, &scores);
 	return scores;
+}
+
+void SqliteDatabase::insertIntoStatistics(int gameId, std::string username, std::string answer, int answerTime)
+{
+	std::string statement = "INSERT INTO STATISTIC(GAMEID,UNAME,ISCORRECT,ANSWERTIME,SCORE)\ VALUES(" + std::to_string(gameId) + ",\"" + username + "\"," + std::to_string(isAnswerCorrect(answer)) + "," + std::to_string(answerTime) + "," + std::to_string(1000 * isAnswerCorrect(answer) - (answerTime / 100.0) * 1000 * isAnswerCorrect(answer)) + ");";
+	ExecuteSQL(statement);
+}
+
+int SqliteDatabase::isAnswerCorrect(std::string answer)
+{
+	bool flag = false;
+	std::string statement = "SELECT * FROM QUESTIONS WHERE CorrectAns = \"" + answer + "\";";
+	ExecuteSqlCallback(statement, isExistsCallback, &flag);
+	return flag ? 1 : 0;
+	
+}
+
+void SqliteDatabase::insertGame(int gameId)
+{
+	std::string statement = "INSERT INTO GAME(GAMEID) VALUES(" + std::to_string(gameId) + ");";
+	ExecuteSQL(statement);
+
+}
+
+int SqliteDatabase::getPlayerScore(int gameId, std::string uname)
+{
+	int score = 0;
+	std::string statement = "SELECT SUM(SCORE) FROM STATISTIC WHERE UNAME = \"" + uname + "\" AND GAMEID = " + std::to_string(gameId) + ";";
+	ExecuteSqlCallback(statement, getIntCallback, &score);
+	return score;
+	
+}
+
+void SqliteDatabase::insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4)
+{
+	std::string statement = "INSERT INTO QUESTIONS (QUESTION,CorrectAns,ANS2,ANS3,ANS4) VALUES(\"" + q + "\",\"" + correct + "\",\"" + ans2 + "\",\"" + ans3 + "\",\"" + ans4 + "\");";
+	ExecuteSQL(statement);
+}
+
+bool SqliteDatabase::doesQuestionExist(std::string q)
+{
+	bool flag = false;
+	std::string statement = "SELECT * FROM QUESTIONS WHERE QUESTION = \"" + q + "\";";
+	ExecuteSqlCallback(statement, isExistsCallback, &flag);
+	return flag;
 }
 
 
@@ -74,7 +119,7 @@ void SqliteDatabase::addNewUser(std::string name, std::string password, std::str
 std::list<Question> SqliteDatabase::getQuestions(int num)
 {
 	std::list<Question> q;
-	std::string statement = "SELECT * FROM QUESTIONS LIMIT " + std::to_string(num) + ";";
+	std::string statement = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT " + std::to_string(num) + ";";
 	ExecuteSqlCallback(statement, fillQuestionsCallback, &q);
 	return q;
 }
@@ -82,8 +127,16 @@ std::list<Question> SqliteDatabase::getQuestions(int num)
 float SqliteDatabase::getAverageAnswerTime(std::string name)
 {
 	float time = 0;
-	std::string statement = "SELECT AVG(ANSWERTIME) FROM STATISTIC\ WHERE UNAME = \"" + name + "\";";
-	ExecuteSqlCallback(statement, getFloatCallback, &time);
+	std::string statement = "SELECT AVG(ANSWERTIME) FROM STATISTIC WHERE UNAME = \"" + name + "\";";
+	try
+	{
+		ExecuteSqlCallback(statement, getFloatCallback, &time);
+	}
+	catch (std::exception& e)
+	{
+		throw ExceptionHandler("Error...User wasn't found");
+	}
+	
 	return time;
 }
 
@@ -99,7 +152,7 @@ int SqliteDatabase::getNumOfCorrectAnswers(std::string name)
 int SqliteDatabase::getNumOfTotalAnswers(std::string name)
 {
 	int num = 0;
-	std::string statement = "SELECT COUNT(UNAME) FROM STATISTIC;";
+	std::string statement = "SELECT COUNT(UNAME) FROM STATISTIC WHERE UNAME = \""+name+"\";";
 	ExecuteSqlCallback(statement, getIntCallback, &num);
 	return num;
 }
@@ -132,8 +185,8 @@ int SqliteDatabase::isExistsCallback(void* data, int argc, char** argv, char** a
 
 int SqliteDatabase::fillQuestionsCallback(void* data, int argc, char** argv, char** azColName)
 {
-	Question q = Question(azColName[0], azColName[1], azColName[2], azColName[3], azColName[4]);
-	(*(std::list<Question>*)data).push_back(q);
+	Question q = Question(argv[1], argv[2], argv[3], argv[4], argv[5]);
+	((std::list<Question>*)data)->push_back(q);
 	return 0;
 }
 
@@ -141,7 +194,8 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 {
 	try
 	{
-		*(float*)data = std::stof(azColName[0]);
+		if(argv[0] != nullptr)
+			*(float*)data = std::stof(argv[0]);
 	}
 	catch (std::exception& e)
 	{
@@ -152,15 +206,16 @@ int SqliteDatabase::getFloatCallback(void* data, int argc, char** argv, char** a
 
 int SqliteDatabase::getIntCallback(void* data, int argc, char** argv, char** azColName)
 {
-	*(int*)data = atoi(azColName[0]);
+	if (argv[0] != nullptr)	
+		*(int*)data = atoi(argv[0]);
 	return 0;
 }
 
 int SqliteDatabase::fillScoreCallback(void* data, int argc, char** argv, char** azColName)
 {
-	std::strcat(azColName[1], "=");
-	std::strcat(azColName[1], azColName[4]);
-	(*(std::vector<std::string>*)data).push_back(azColName[1]);
+	std::string str1 = std::string(argv[0]);
+	std::string str2 = std::string(argv[1]);
+	(*(std::vector<std::string>*)data).push_back(str1+"="+str2);
 	return 0;
 
 }

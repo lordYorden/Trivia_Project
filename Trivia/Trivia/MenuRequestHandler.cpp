@@ -34,7 +34,7 @@ MenuRequestHandler::~MenuRequestHandler()
 */
 bool MenuRequestHandler::isRequestRelevent(RequestInfo info)
 {
-	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM;
+	return info.id == RequestId::MT_SIGNOUT_REQUEST || info.id == RequestId::MT_GET_ROOMS_REQUEST || info.id == RequestId::MT_GET_PLAYERS_IN_ROOM || info.id == RequestId::MT_GET_STATISTICS || info.id == RequestId::MT_GET_HIGHSCORES || info.id == RequestId::MT_JOIN_ROOM || info.id == RequestId::MT_CREATE_ROOM || info.id == RequestId::MT_ADD_QUESTION;
 }
 
 /*
@@ -58,7 +58,7 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 			return signout(info);
 		case RequestId::MT_GET_ROOMS_REQUEST:
 			return getRooms(info);
-		case RequestId::MT_GET_PLAYERS_IN_ROOM_REQUEST:
+		case RequestId::MT_GET_PLAYERS_IN_ROOM:
 			return getPlayersInRoom(info);
 		case RequestId::MT_GET_STATISTICS:
 			return getPersonalStats(info);
@@ -68,6 +68,8 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 			return joinRoom(info);
 		case RequestId::MT_CREATE_ROOM:
 			return createRoom(info);
+		case RequestId::MT_ADD_QUESTION:
+			return addQuestion(info);
 		}
 	}
 	catch (nlohmann::json::parse_error& e)
@@ -81,24 +83,6 @@ RequestResult MenuRequestHandler::RequestHandler(RequestInfo info)
 		std::cout << message << std::endl;
 		return error(message);
 	}
-}
-
-/*
-  *helper method*
-* the function get a message and return a RequestResult object to send
-* to the user
-* input: message - the error message (std::string)
-* output: requestRes - the response to send to the user (RequestResult)
-*/
-RequestResult MenuRequestHandler::error(const std::string& message)
-{
-	ErrorResponse errorRes;
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	errorRes.message = message;
-	buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
 }
 
 /*
@@ -185,7 +169,7 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 	std::vector<std::string> highScores = m_statisticsManager.getHighScore();
 	GetScoresResponse highScoreRes = { RequestId::MT_RESPONSE_OK, highScores};
 	buffer = JsonResponseSerializer::serializeHighScoresResponse(highScoreRes);
-	std::cout << "statistics for " << m_user.getUsername() << std::endl;
+	std::cout << "high score for " << m_user.getUsername() << std::endl;
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }
@@ -230,6 +214,28 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	newHandler = m_handlerFactory.createRoomAdminRequestHandler(roomID, m_user);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
+}
+
+/*
+* the function handles the Add Question requests of the user
+* input: info - the Add Question request of the user (RequestInfo)
+* output: requestRes - the response to send to the user (RequestResult)
+*/
+RequestResult MenuRequestHandler::addQuestion(RequestInfo info)
+{
+	std::vector<unsigned char> buffer;
+	IRequestHandler* newHandler = nullptr;
+	SubmitQuestionRequest submitQuestionReq = JsonRequestPacketDeserializer::deserializerSubmitQuestionRequest(info.buffer);
+	m_statisticsManager.insertQuestion(submitQuestionReq.question, submitQuestionReq.correctAns, submitQuestionReq.secAns, submitQuestionReq.thirdAns, submitQuestionReq.fourthAns);
+	
+		std::cout << m_user.getUsername() << " Has submited a question!" << std::endl;
+		GetSubmitAnswerResponse res = { 1 };
+		buffer = JsonResponseSerializer::serializeGetSubmitAnswerResponse(res);
+		RequestResult requestRes = { buffer, newHandler };
+		return requestRes;
+	
+	
+	
 }
 
 /*

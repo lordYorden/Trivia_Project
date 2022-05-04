@@ -18,7 +18,6 @@ public:
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
 private:
-	RequestResult error(const std::string& message);
 	RequestResult signout(RequestInfo info);
 	RequestResult getRooms(RequestInfo info);
 	RequestResult getPlayersInRoom(RequestInfo info);
@@ -26,6 +25,7 @@ private:
 	RequestResult getHighScore(RequestInfo info);
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
+	RequestResult addQuestion(RequestInfo info);
 	int generateRoomID(std::string roomName);
 	RequestHandlerFactory& m_handlerFactory;
 	StatisticsManager& m_statisticsManager;

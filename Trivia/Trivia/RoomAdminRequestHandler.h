@@ -14,7 +14,6 @@ public:
 	virtual bool isRequestRelevent(RequestInfo info) override;
 	virtual RequestResult RequestHandler(RequestInfo info) override;
 private:
-	RequestResult error(const std::string& message);
 	RequestResult closeRoom(RequestInfo info);
 	RequestResult startGame(RequestInfo info);
 };

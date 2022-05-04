@@ -3,6 +3,7 @@
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
 #include "MenuRequestHandler.h"
+#include "GameRequestHandler.h"
 #include <exception>
 
 /*
@@ -35,18 +36,24 @@ RequestResult RoomRequestHandler::getRoomState(RequestInfo info)
 {
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
-	int stutus = RequestId::MT_RESPONSE_OK;
+	int status = RequestId::MT_RESPONSE_OK;
 	try
 	{
 		m_room = m_roomManager.getRoomById(m_room.getMetadata().id) ;
 	}
 	catch (ExceptionHandler e)
 	{
-		stutus = MT_ERROR;
+		status = MT_ERROR;
 		newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	}
 	RoomData metadata = m_room.getMetadata();
-	GetRoomStateResponse stateRes = { stutus, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
+	if (m_roomManager.getRoomState(metadata.id))
+	{
+		status = RequestId::MT_START_GAME_INDICATOR;
+		Game& game = m_handlerFactory.getGameManager().getGameByID(metadata.id, m_user);
+		newHandler = m_handlerFactory.createGameRequestHandler(game, m_user);
+	}
+	GetRoomStateResponse stateRes = { status, metadata.isActive, m_room.getAllUsers(), metadata.numOfQuestionsInGame, metadata.timePerQuestion };
 	std::cout << "sended data on room " << metadata.id << " to " << m_user.getUsername() << std::endl;
 	buffer = JsonResponseSerializer::serializeGetRoomStateResponse(stateRes);
 	RequestResult requestRes = { buffer, newHandler };

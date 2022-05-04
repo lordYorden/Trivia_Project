@@ -71,7 +71,11 @@ std::vector<RoomData> RoomManager::getRooms()
 	std::map<int, Room>::iterator it = this->m_rooms.begin();
 	for (; it != this->m_rooms.end(); it++)
 	{
-		rooms.push_back(it->second.getMetadata());
+		RoomData metadata = it->second.getMetadata();
+		if (!metadata.isActive)
+		{
+			rooms.push_back(metadata);
+		}
 	}
 	return rooms;
 }
@@ -120,7 +124,14 @@ Room::~Room()
 */
 void Room::addUser(LoggedUser user)
 {
-	this->m_users.push_back(user);
+	if (this->m_metadata.maxPlayers > this->m_users.size())
+	{
+		this->m_users.push_back(user);
+	}
+	else
+	{
+		throw ExceptionHandler("Error...Max players reached couldn't join into rooms");
+	}
 }
 
 /*

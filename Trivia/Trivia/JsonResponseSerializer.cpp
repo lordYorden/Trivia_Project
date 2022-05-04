@@ -194,3 +194,66 @@ std::vector<unsigned char> JsonResponseSerializer::serializeLeaveRoomResponse(Le
     return buffer;
 }
 
+std::vector<unsigned char> JsonResponseSerializer::serializeLeaveGameResponse(LeaveGameResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetQuestionResponse(GetQuestionResponse response)
+{
+    std::string answers = "";
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    j["question"] = response.question;
+    j["correctAnswer"] = response.correctAnswer;
+    j["otherAnswers"] = response.otherAnswers;
+    
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeSubmitAnswerResponse(SubmitAnswerResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetGameResultsResponse(GetGameResultsResponse response)
+{
+    std::string results = "";
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    for (std::vector<PlayerResults>::iterator it = response.results.begin(); it != response.results.end(); it++)
+    {
+        results += (it->username + "&" + std::to_string(it->correctAnswerCount) + "&" + std::to_string(it->wrongAnswerCount) +"&"+ std::to_string(it->averageAnswerTime)+"&"+std::to_string(it->score) + "-");
+    }
+    results = results.substr(0, results.length() - 1);
+    j["results"] = results;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+    
+}
+
+std::vector<unsigned char> JsonResponseSerializer::serializeGetSubmitAnswerResponse(GetSubmitAnswerResponse response)
+{
+    std::vector<unsigned char> buffer;
+    buffer.push_back(RequestId::MT_RESPONSE_OK + TO_CHAR);
+    nlohmann::json j;
+    j["status"] = response.status;
+    ConvertHelper::fillingVector(buffer, j);
+    return buffer;
+}
+

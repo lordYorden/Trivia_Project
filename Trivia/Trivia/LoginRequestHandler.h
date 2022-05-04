@@ -15,7 +15,6 @@ public:
 private:
 	RequestResult login(RequestInfo info);
 	RequestResult signup(RequestInfo info);
-	RequestResult error(const std::string& message);
 	LoginManager& m_loginManager;
 	RequestHandlerFactory& m_handlerFactory;
 };

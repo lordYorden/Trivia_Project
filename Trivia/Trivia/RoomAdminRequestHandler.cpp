@@ -3,6 +3,7 @@
 #include "json.hpp"
 #include "RequestHandlerFactory.h"
 #include "MenuRequestHandler.h"
+#include "GameRequestHandler.h"
 
 /*
 * The Constructor of Class RoomAdminRequestHandler
@@ -28,7 +29,7 @@ RoomAdminRequestHandler::~RoomAdminRequestHandler()
 /*
 * check if the request is part of the room Admin requests
 * input: info - the request information (RequestInfo)
-* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+* output: isRequestRelevent - if the request is part of the room Admin requests (bool)
 */
 bool RoomAdminRequestHandler::isRequestRelevent(RequestInfo info)
 {
@@ -74,24 +75,6 @@ RequestResult RoomAdminRequestHandler::RequestHandler(RequestInfo info)
 }
 
 /*
-  *helper method*
-* the function get a message and return a RequestResult object to send
-* to the user
-* input: message - the error message (std::string)
-* output: requestRes - the response to send to the user (RequestResult)
-*/
-RequestResult RoomAdminRequestHandler::error(const std::string& message)
-{
-	ErrorResponse errorRes;
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	errorRes.message = message;
-	buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
-}
-
-/*
 * the function handles the closeRoom requests of the user
 * input: info - the closeRoom request of the user (RequestInfo)
 * output: requestRes - the response to send to the user (RequestResult)
@@ -120,10 +103,12 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 	std::vector<unsigned char> buffer;
 	IRequestHandler* newHandler = nullptr;
 	int roomID = m_room.getMetadata().id;
-	m_room.setRoomState(true);
+	Room& room = m_roomManager.getRoomById(roomID);
+	room.setRoomState(true);
+	Game& game = m_handlerFactory.getGameManager().CreateGame(room);
+	newHandler = m_handlerFactory.createGameRequestHandler(game, m_user);
 	std::cout << "the room " << roomID << " has started the game" << std::endl;
 	StartGameResponse startRes = { RequestId::MT_RESPONSE_OK };
-	//create Game Handler
 	buffer = JsonResponseSerializer::serializeStartGameResponse(startRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;

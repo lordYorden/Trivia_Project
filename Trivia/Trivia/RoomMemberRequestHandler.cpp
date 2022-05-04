@@ -28,7 +28,7 @@ RoomMemberRequestHandler::~RoomMemberRequestHandler()
 /*
 * check if the request is part of the room Member requests
 * input: info - the request information (RequestInfo)
-* output: isRequestRelevent - if the request is part of ther menu requests (bool)
+* output: isRequestRelevent - if the request is part of the room Member requests (bool)
 */
 bool RoomMemberRequestHandler::isRequestRelevent(RequestInfo info)
 {
@@ -86,24 +86,6 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	LeaveRoomResponse leaveRes = { RequestId::MT_RESPONSE_OK };
 	newHandler = m_handlerFactory.createMenuRequestHandler(m_user);
 	buffer = JsonResponseSerializer::serializeLeaveRoomResponse(leaveRes);
-	RequestResult requestRes = { buffer, newHandler };
-	return requestRes;
-}
-
-/*
-  *helper method*
-* the function get a message and return a RequestResult object to send
-* to the user
-* input: message - the error message (std::string)
-* output: requestRes - the response to send to the user (RequestResult)
-*/
-RequestResult RoomMemberRequestHandler::error(const std::string& message)
-{
-	ErrorResponse errorRes;
-	std::vector<unsigned char> buffer;
-	IRequestHandler* newHandler = nullptr;
-	errorRes.message = message;
-	buffer = JsonResponseSerializer::serializeErrorResponse(errorRes);
 	RequestResult requestRes = { buffer, newHandler };
 	return requestRes;
 }

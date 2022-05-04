@@ -19,6 +19,12 @@ public:
 	void ExecuteSqlCallback(std::string statement, int(*callback)(void*, int, char**, char**), void* data);
 	void open();
 	std::vector<std::string> getTopFiveScores()override;
+	void insertIntoStatistics(int gameId, std::string username, std::string answer, int answerTime)override;
+	int isAnswerCorrect(std::string answer)override;
+	 void insertGame(int gameId)override;
+	 int getPlayerScore(int gameId, std::string uname)override;
+	 void insertQuestion(std::string q, std::string correct, std::string ans2, std::string ans3, std::string ans4)override;
+	 bool doesQuestionExist(std::string q)override;
 private:
 
 	static int isExistsCallback(void* data, int argc, char** argv, char** azColName);

@@ -4,6 +4,7 @@
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include "RoomRequestHandler.h"
+#include "GameRequestHandler.h"
 
 /*
 * RequestHandlerFactory class constractor
@@ -12,7 +13,7 @@
 * output: none
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database):
-	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(database)
+	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(database), m_gameManager(database)
 {
 }
 
@@ -96,4 +97,14 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(in
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(int RoomID, LoggedUser& user)
 {
 	return new RoomMemberRequestHandler(*this, user, m_roomManager.getRoomById(RoomID));
+}
+
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(Game& game, LoggedUser& user)
+{
+	return new GameRequestHandler(*this, user, game);
+}
+
+GameManager& RequestHandlerFactory::getGameManager()
+{
+	return this->m_gameManager;
 }
